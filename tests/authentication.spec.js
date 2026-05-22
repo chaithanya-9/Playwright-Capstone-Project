@@ -5,7 +5,7 @@ const { LoginPage } = require('../pages/LoginPage.js');
 test.describe('Authentication Service Tests', () => {
 
     // test 01 
-    test('Test-01: Successful login with valid credentials', async ({ page }) => {
+    test('Test-01: Verify successfull login with valid credentials', async ({ page }) => {
         // initialize page object
         const loginPage = new LoginPage(page);
         // navigate to website (navigate() method inherited from BasePage)
@@ -20,7 +20,7 @@ test.describe('Authentication Service Tests', () => {
     });
 
     // test 02
-    test('Test-02: Failure Login with invalid credentials', async ({ page }) => {
+    test('Test-02: Verify login fails with invalid credentials', async ({ page }) => {
         // initialize page object
         const loginPage = new LoginPage(page);
         // navigate to website and open login page
@@ -33,5 +33,19 @@ test.describe('Authentication Service Tests', () => {
         // verify error message
         const errorMessage = await loginPage.getErrorMessage();
         await expect(errorMessage).toContain('Warning: No match for E-Mail Address and/or Password.')
-    })
+    });
+
+    // test 03
+    test('Test-03: Verify login fails with invalid email format', async ({ page }) => {
+        const loginPage = new LoginPage(page);
+        // navigate to website and open login page
+        await loginPage.navigate();
+        await loginPage.navigateToLogin();
+        // login with invalid email format (missing .com in email) but valid credentials
+        await loginPage.login('demotest@gmail', 'demotest');
+        // verify error message 
+        // used .toContainText() instead of .toContain() because .toContainText() automatically waits for the text to render first and its  more efficient
+        // and we can direclty pass the locator no need to fetch the error message using getErrorMessage() method
+        await expect(loginPage.errorMessage).toContainText(' Warning: No match for E-Mail Address and/or Password.');
+    });
 });
