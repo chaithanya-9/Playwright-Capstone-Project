@@ -1,7 +1,8 @@
 const { test, expect } = require('@playwright/test');
 const { LoginPage } = require('../pages/LoginPage.js');
+const { RegisterPage } = require('../pages/RegisterPage.js');
 
-// .describe() groups all the tests
+// group all the tests of authentication service
 test.describe('Authentication Service Tests', () => {
 
     // test 01 
@@ -74,5 +75,24 @@ test.describe('Authentication Service Tests', () => {
         await loginPage.passwordInput.press('Enter');
         // check if page redirected to my account page
         await expect(page).toHaveURL(/.*route=account\/account/);
+    });
+
+    // test 06
+    test('Test-06: Verify successful registration with ONLY mandatory fields filled', async ({ page }) => {
+        const registerPage = new RegisterPage(page);
+        // navigate to website and open registration page
+        await registerPage.navigate();
+        await registerPage.navigateToRegister();
+        // generate Date.now() to create mailId so mailId will become unique and test never fails duplicate mailId's
+        const uniqueMailId = `newUser${Date.now()}@gmail.com`;
+        // generate unique telephone number using Math.random() to generate random number and padStart() will make sure it to be exactly 8 chars
+        const uniqueTelephone = `98${Math.floor(Math.random() * 100000000).toString().padStart(8, '0')}`;
+        // generate unique password 
+        const uniquePassword = `newUser${Date.now()}`;
+        await registerPage.fillRegistrationForm('new', 'user', uniqueMailId, uniqueTelephone, uniquePassword);
+        await registerPage.checkPrivacyPolicy();
+        await registerPage.clickContinue();
+        // verify successful registration by checking the URL for the success routing
+        await expect(page).toHaveURL(/.*route=account\/success/);
     });
 });
