@@ -6,21 +6,32 @@ test.describe('Authentication Service Tests', () => {
 
     // test 01 
     test('Test-01: Successful login with valid credentials', async ({ page }) => {
-
         // initialize page object
         const loginPage = new LoginPage(page);
-
         // navigate to website (navigate() method inherited from BasePage)
         await loginPage.navigate();
-
         // navigate to login page 
         await loginPage.navigateToLogin();
-
         // login with valid credentials
         // manually registered with demotest@gmail.com 
         await loginPage.login('demotest@gmail.com', 'demotest');
-
         // check if page redirected to my account page
         await expect(page).toHaveURL(/.*route=account\/account/);
     });
+
+    // test 02
+    test('Test-02: Failure Login with invalid credentials', async ({ page }) => {
+        // initialize page object
+        const loginPage = new LoginPage(page);
+        // navigate to website and open login page
+        await loginPage.navigate();
+        await loginPage.navigateToLogin();
+        // generate unique email everytime test runs so OpenCart doest exceeds login attempts for same email
+        const uniqueMailId = `fakeEmail${Date.now()}@gmail.com`;
+        // login with invalid credentials
+        await loginPage.login(uniqueMailId, 'fakeLogin');
+        // verify error message
+        const errorMessage = await loginPage.getErrorMessage();
+        await expect(errorMessage).toContain('Warning: No match for E-Mail Address and/or Password.')
+    })
 });
