@@ -10,8 +10,8 @@ class RegisterPage extends BasePage {
         this.emailInput = page.getByRole('textbox', { name: 'E-Mail' });
         this.telephoneInput = page.getByRole('textbox', { name: 'Telephone' });
         // password details
-        this.passwordInput = page.getByRole('textbox', { name: 'Password', exact: true });
-        this.passwordConfirmInput = page.getByRole('textbox', { name: 'Password Confirm' });
+        this.passwordInput = page.getByRole('textbox', { name: '* Password', exact: true });
+        this.passwordConfirmInput = page.getByRole('textbox', { name: '* Password Confirm' });
         this.privacyPolicyCheckbox = page.getByRole('checkbox');
         this.continueButton = page.getByRole('button', { name: 'Continue' });
         // main warning like duplicate email or checkbox not checked 
