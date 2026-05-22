@@ -60,4 +60,19 @@ test.describe('Authentication Service Tests', () => {
         // verify error message
         await expect(loginPage.errorMessage).toContainText(' Warning: No match for E-Mail Address and/or Password.');
     });
+
+    // test 05
+    test('Test-05: Verify successful login can be triggered by pressing the Keyboard Enter key', async ({ page }) => {
+        const loginPage = new LoginPage(page);
+        // navigate to website and open login page
+        await loginPage.navigate();
+        await loginPage.navigateToLogin();
+        // fill credentials without using login() method as it directly clicks login button
+        await loginPage.emailInput.fill('demotest@gmail.com');
+        await loginPage.passwordInput.fill('demotest');
+        // press enter while in password input
+        await loginPage.passwordInput.press('Enter');
+        // check if page redirected to my account page
+        await expect(page).toHaveURL(/.*route=account\/account/);
+    });
 });
