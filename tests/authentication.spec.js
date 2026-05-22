@@ -48,4 +48,16 @@ test.describe('Authentication Service Tests', () => {
         // and we can direclty pass the locator no need to fetch the error message using getErrorMessage() method
         await expect(loginPage.errorMessage).toContainText(' Warning: No match for E-Mail Address and/or Password.');
     });
+
+    // test 04
+    test('Test-04: Verify login fails when submitting empty fields', async ({ page }) => {
+        const loginPage = new LoginPage(page);
+        // navigate to website and open login page
+        await loginPage.navigate();
+        await loginPage.navigateToLogin();
+        // passing empty strings as parameters
+        await loginPage.login('', '');
+        // verify error message
+        await expect(loginPage.errorMessage).toContainText(' Warning: No match for E-Mail Address and/or Password.');
+    });
 });
