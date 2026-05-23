@@ -1,8 +1,7 @@
 const { test, expect } = require('@playwright/test');
 const { LoginPage } = require('../pages/LoginPage.js');
 const { RegisterPage } = require('../pages/RegisterPage.js');
-const { register } = require('node:module');
-
+const { ForgotPasswordPage } = require('../pages/ForgotPasswordPage.js');
 // group all the tests of authentication service
 test.describe('Authentication Service Tests', () => {
 
@@ -190,5 +189,21 @@ test.describe('Authentication Service Tests', () => {
             'Telephone must be between 3 and 32 characters!',
             'Password must be between 4 and 20 characters!'
         ])
+    });
+
+    // test 12
+    test('Test-12: Verify the Forgot Password successfully sends a reset link with a registered email', async ({ page }) => {
+        // initialize both page objects 
+        const loginPage = new LoginPage(page);
+        const forgotPasswordPage = new ForgotPasswordPage(page);
+        // Navigate to the login screen first
+        await loginPage.navigate();
+        await loginPage.navigateToLogin();
+        await loginPage.clickForgotPassword();
+        // use a already registered email
+        const validEmail = 'demotest@gmail.com';
+        await forgotPasswordPage.requestPasswordReset(validEmail);
+        // verify the system throws green success message
+        await expect(forgotPasswordPage.successMessage).toContainText(' An email with a confirmation link has been sent your email address.');
     });
 });
