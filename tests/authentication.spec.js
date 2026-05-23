@@ -235,4 +235,12 @@ test.describe('Authentication Service Tests', () => {
         // verify the system successfully routed to the logout confirmation page
         await expect(page).toHaveURL(/.*route=account\/logout/);
     });
+
+    // test 15
+    test('Test-15: Verify unauthorized URL access redirects to login', async ({ page }) => {
+        // We attempt to load the secured "My Account" dashboard directly without logging in
+        await page.goto('https://naveenautomationlabs.com/opencart/index.php?route=account/account');
+        // verify the system catches the unauthorized access and forcefully redirects us to the login screen
+        await expect(page).toHaveURL(/.*route=account\/login/);
+    });
 });
