@@ -222,4 +222,17 @@ test.describe('Authentication Service Tests', () => {
         // verify the system rejects the request and throws a warning message
         await expect(forgotPasswordPage.warningMessage).toContainText(' Warning: The E-Mail Address was not found in our records, please try again!');
     });
+
+    // test 14
+    test('Test-14: Verify successful logout from the top dropdown', async ({ page }) => {
+        const loginPage = new LoginPage(page);
+        await loginPage.navigate();
+        await loginPage.navigateToLogin();
+        // using valid account
+        await loginPage.login('demotest@gmail.com', 'demotest');
+        // we use loginPage itself to call clickLogout() because loginPage extends BasePage
+        await loginPage.clickLogout();
+        // verify the system successfully routed to the logout confirmation page
+        await expect(page).toHaveURL(/.*route=account\/logout/);
+    });
 });
