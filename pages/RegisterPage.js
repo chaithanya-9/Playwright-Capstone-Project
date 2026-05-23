@@ -13,13 +13,12 @@ class RegisterPage extends BasePage {
         this.passwordInput = page.getByRole('textbox', { name: '* Password', exact: true });
         this.passwordConfirmInput = page.getByRole('textbox', { name: '* Password Confirm' });
         this.privacyPolicyCheckbox = page.getByRole('checkbox');
+        this.newsletterRadioYes = page.getByRole('radio', { name: 'Yes' });
         this.continueButton = page.getByRole('button', { name: 'Continue' });
         // main warning like duplicate email or checkbox not checked 
         this.mainWarningMessage = page.locator('.alert-danger');
         // input field missing warning
         this.inputFieldWarning = page.locator('.text-danger');
-        // input radio field for Newsletter
-        this.newsletterRadioYes = page.getByRole('radio', { name: 'Yes' });
     }
     // fills all mandatory and optional text fields in the registration form
     async fillRegistrationForm(firstName, lastName, email, telephone, password) {
@@ -29,6 +28,10 @@ class RegisterPage extends BasePage {
         await this.telephoneInput.fill(telephone);
         await this.passwordInput.fill(password);
         await this.passwordConfirmInput.fill(password);
+    }
+    // select Yes radio button to subscribe to the newsletter
+    async selectNewsletter() {
+        await this.newsletterRadioYes.check();
     }
     // clicks the mandatory privacy policy checkbox before submission
     async checkPrivacyPolicy() {
