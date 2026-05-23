@@ -238,9 +238,25 @@ test.describe('Authentication Service Tests', () => {
 
     // test 15
     test('Test-15: Verify unauthorized URL access redirects to login', async ({ page }) => {
-        // We attempt to load the secured "My Account" dashboard directly without logging in
+        // we attempt to load the secured "My Account" dashboard directly without logging in
         await page.goto('https://naveenautomationlabs.com/opencart/index.php?route=account/account');
         // verify the system catches the unauthorized access and forcefully redirects us to the login screen
+        await expect(page).toHaveURL(/.*route=account\/login/);
+    });
+
+    // test 16
+    test('Test-16: Verify session invalidation on browser back button', async ({ page }) => {
+        const loginPage = new LoginPage(page);
+        // log in with a valid account
+        await loginPage.navigate();
+        await loginPage.navigateToLogin();
+        await loginPage.login('demotest@gmail.com', 'demotest');
+        await loginPage.clickLogout();
+        // wait for the logout page to fully load so we know the session is destroyed
+        await expect(page).toHaveURL(/.*route=account\/logout/);
+        // .goBack() will work like user clicks back button on browser
+        await page.goBack();
+        // verify the system blocks access to the account dashboard
         await expect(page).toHaveURL(/.*route=account\/login/);
     });
 });
