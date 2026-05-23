@@ -1,6 +1,7 @@
 const { test, expect } = require('@playwright/test');
 const { LoginPage } = require('../pages/LoginPage.js');
 const { RegisterPage } = require('../pages/RegisterPage.js');
+const { register } = require('node:module');
 
 // group all the tests of authentication service
 test.describe('Authentication Service Tests', () => {
@@ -114,5 +115,21 @@ test.describe('Authentication Service Tests', () => {
         await registerPage.clickContinue();
         // verify successful registration by checking the URL for the success routing
         await expect(page).toHaveURL(/.*route=account\/success/);
+    });
+
+    // test 08
+    test('Test-08: Verify registration fails if duplicate mailID is used', async ({ page }) => {
+        const registerPage = new RegisterPage(page);
+        // navigate to website and open registration page
+        await registerPage.navigate();
+        await registerPage.navigateToRegister();
+        // intentionally use an email that is already registered in the OpenCart database
+        const existingEmail = 'demotest@gmail.com';
+        // fill the mandatory fields
+        await registerPage.fillRegistrationForm('Duplicate', 'User', existingEmail, '9800000000', 'password123');
+        await registerPage.checkPrivacyPolicy();
+        await registerPage.clickContinue();
+        // verify the system rejects the registration and throws duplicate email warning
+        await expect(registerPage.mainWarningMessage).toContainText(' Warning: E-Mail Address is already registered!');
     });
 });
