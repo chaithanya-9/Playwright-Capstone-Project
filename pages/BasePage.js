@@ -10,7 +10,7 @@ class BasePage {
         this.loginLink = page.locator('#top-links').getByRole('link', { name: 'Login' });
         this.shoppingCartLink = page.locator('a[title="Shopping Cart"]');
         this.checkoutLink = page.locator('a[title="Checkout"]');
-        this.logoutLink = page.locator(.dropdown - menu).getByRole('link', { name: 'Logout' });
+        this.logoutLink = page.locator('.dropdown-menu').getByRole('link', { name: 'Logout' });
     }
     // navigate to the base URL
     async navigate() {
