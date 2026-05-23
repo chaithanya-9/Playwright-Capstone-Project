@@ -47,7 +47,7 @@ test.describe('Authentication Service Tests', () => {
         // verify error message 
         // used .toContainText() instead of .toContain() because .toContainText() automatically waits for the text to render first and its  more efficient
         // and we can direclty pass the locator no need to fetch the error message using getErrorMessage() method
-        await expect(loginPage.errorMessage).toContainText(' Warning: No match for E-Mail Address and/or Password.');
+        await expect(loginPage.errorMessage).toContainText(/ Warning: No match for E-Mail Address and\/or Password.| Warning: Your account has exceeded allowed number of login attempts. Please try again in 1 hour./);
     });
 
     // test 04
@@ -59,7 +59,7 @@ test.describe('Authentication Service Tests', () => {
         // passing empty strings as parameters
         await loginPage.login('', '');
         // verify error message
-        await expect(loginPage.errorMessage).toContainText(' Warning: No match for E-Mail Address and/or Password.');
+        await expect(loginPage.errorMessage).toContainText(/ Warning: No match for E-Mail Address and\/or Password.| Warning: Your account has exceeded allowed number of login attempts. Please try again in 1 hour./);
     });
 
     // test 05
@@ -83,7 +83,7 @@ test.describe('Authentication Service Tests', () => {
         // navigate to website and open registration page
         await registerPage.navigate();
         await registerPage.navigateToRegister();
-        // generate Date.now() to create mailId so mailId will become unique and test never fails duplicate mailId's
+        // use Date.now() to concat in mailId using template literals so mailId will become unique and test never fails due to duplicate mailId's
         const uniqueMailId = `newUser${Date.now()}@gmail.com`;
         // generate unique telephone number using Math.random() to generate random number and padStart() will make sure it to be exactly 8 chars
         const uniqueTelephone = `98${Math.floor(Math.random() * 100000000).toString().padStart(8, '0')}`;
