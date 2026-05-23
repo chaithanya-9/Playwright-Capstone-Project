@@ -151,4 +151,22 @@ test.describe('Authentication Service Tests', () => {
         // verify the system catches the password mismatch and throws field level warning
         await expect(registerPage.inputFieldWarning).toContainText('Password confirmation does not match password!');
     });
+
+    // test 10
+    test('Test-10: Verify registration fails if the privacy policy checkbox not checked', async ({ page }) => {
+        const registerPage = new RegisterPage(page);
+        // navigate to website and open registration page
+        await registerPage.navigate();
+        await registerPage.navigateToRegister();
+        // generate unique data so test never fails
+        const uniqueMailId = `newUser${Date.now()}@gmail.com`;
+        const uniquePassword = `newUser${Date.now()}`;
+        const uniqueTelephone = `98${Math.floor(Math.random() * 100000000).toString().padStart(8, '0')}`;
+        // fill the mandatory fields
+        await registerPage.fillRegistrationForm('new', 'user', uniqueMailId, uniqueTelephone, uniquePassword);
+        // attempt submit the form
+        await registerPage.clickContinue();
+        // verify the system blocks registration and throws the top level privacy policy warning
+        await expect(registerPage.mainWarningMessage).toContainText(' Warning: You must agree to the Privacy Policy!');
+    });
 });
