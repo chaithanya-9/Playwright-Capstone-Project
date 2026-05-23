@@ -132,4 +132,23 @@ test.describe('Authentication Service Tests', () => {
         // verify the system rejects the registration and throws duplicate email warning
         await expect(registerPage.mainWarningMessage).toContainText(' Warning: E-Mail Address is already registered!');
     });
+
+    // test 09
+    test('Test-09: Verify registration fails if password and confirm password does not match', async ({ page }) => {
+        const registerPage = new RegisterPage(page);
+        // navigate to website and open registration page
+        await registerPage.navigate();
+        await registerPage.navigateToRegister();
+        // generate unique data so test never fails
+        const uniqueMailId = `newUser${Date.now()}@gmail.com`;
+        const uniqueTelephone = `98${Math.floor(Math.random() * 100000000).toString().padStart(8, '0')}`;
+        // fill the fields
+        await registerPage.fillRegistrationForm('new', 'user', uniqueMailId, uniqueTelephone, 'oldPassword');
+        // override the confirm password field
+        await registerPage.passwordConfirmInput.fill('differentPassword');
+        await registerPage.checkPrivacyPolicy();
+        await registerPage.clickContinue();
+        // verify the system catches the password mismatch and throws field level warning
+        await expect(registerPage.inputFieldWarning).toContainText('Password confirmation does not match password!');
+    });
 });
