@@ -169,4 +169,26 @@ test.describe('Authentication Service Tests', () => {
         // verify the system blocks registration and throws the top level privacy policy warning
         await expect(registerPage.mainWarningMessage).toContainText(' Warning: You must agree to the Privacy Policy!');
     });
+
+    // test 11
+    test('Test-11: Verify all mandatory warning messages appear when submitting a blank registration form', async ({ page }) => {
+        const registerPage = new RegisterPage(page);
+        // navigate to website and open registration page
+        await registerPage.navigate();
+        await registerPage.navigateToRegister();
+        await registerPage.clickContinue();
+        // verify top level privacy policy warning appears
+        await expect(registerPage.mainWarningMessage).toContainText(' Warning: You must agree to the Privacy Policy!');
+        // verify exactly 5 error messages appear under input fields
+        await expect(registerPage.inputFieldWarning).toHaveCount(5);
+        // verify exact text of every single input field error 
+        // used .toHaveText() instead of .toContainText() is because here we are checking exact match with the errors so toHaveText will check strictly for the given text
+        await expect(registerPage.inputFieldWarning).toHaveText([
+            'First Name must be between 1 and 32 characters!',
+            'Last Name must be between 1 and 32 characters!',
+            'E-Mail Address does not appear to be valid!',
+            'Telephone must be between 3 and 32 characters!',
+            'Password must be between 4 and 20 characters!'
+        ])
+    });
 });
