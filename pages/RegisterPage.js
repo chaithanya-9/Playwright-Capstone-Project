@@ -19,7 +19,7 @@ class RegisterPage extends BasePage {
         // input field missing warning
         this.inputFieldWarning = page.locator('.text-danger');
         // input radio field for Newsletter
-        this.newsletterRadioYes = page.getByRole('radio', { name: 'yes' });
+        this.newsletterRadioYes = page.getByRole('radio', { name: 'Yes' });
     }
     // fills all mandatory and optional text fields in the registration form
     async fillRegistrationForm(firstName, lastName, email, telephone, password) {
