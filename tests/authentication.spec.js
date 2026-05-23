@@ -58,7 +58,7 @@ test.describe('Authentication Service Tests', () => {
         await loginPage.navigateToLogin();
         // passing empty strings as parameters
         await loginPage.login('', '');
-        // verify error message
+        // verify error message, two conditions using OR operator in regexp one is original error message and another is rate limit error message
         await expect(loginPage.errorMessage).toContainText(/ Warning: No match for E-Mail Address and\/or Password.| Warning: Your account has exceeded allowed number of login attempts. Please try again in 1 hour./);
     });
 
@@ -90,6 +90,26 @@ test.describe('Authentication Service Tests', () => {
         // generate unique password 
         const uniquePassword = `newUser${Date.now()}`;
         await registerPage.fillRegistrationForm('new', 'user', uniqueMailId, uniqueTelephone, uniquePassword);
+        await registerPage.checkPrivacyPolicy();
+        await registerPage.clickContinue();
+        // verify successful registration by checking the URL for the success routing
+        await expect(page).toHaveURL(/.*route=account\/success/);
+    });
+
+    // test 07
+    test('Test-07: Verify successfull registration with mandatory and optional fields', async ({ page }) => {
+        const registerPage = new RegisterPage(page);
+        // navigate to website and open registration page
+        await registerPage.navigate();
+        await registerPage.navigateToRegister();
+        // generate unique data so test never fails
+        const uniqueMailId = `newUser${Date.now()}@gmail.com`;
+        const uniquePassword = `newUser${Date.now()}`;
+        const uniqueTelephone = `98${Math.floor(Math.random() * 100000000).toString().padStart(8, '0')}`;
+        // fill the mandatory fields
+        await registerPage.fillRegistrationForm('new', 'user', uniqueMailId, uniqueTelephone, uniquePassword);
+        // select yes to newsletter 
+        await registerPage.selectNewsletter();
         await registerPage.checkPrivacyPolicy();
         await registerPage.clickContinue();
         // verify successful registration by checking the URL for the success routing
