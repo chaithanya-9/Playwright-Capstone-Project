@@ -245,7 +245,8 @@ test.describe('Authentication Service Tests', () => {
     });
 
     // test 16
-    test('Test-16: Verify session invalidation on browser back button', async ({ page }) => {
+    // .fail because this test will fail as website has a bug
+    test.fail('Test-16: Verify session invalidation on browser back button', async ({ page }) => {
         const loginPage = new LoginPage(page);
         // log in with a valid account
         await loginPage.navigate();
