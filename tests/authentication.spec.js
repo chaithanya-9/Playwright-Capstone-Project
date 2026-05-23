@@ -206,4 +206,20 @@ test.describe('Authentication Service Tests', () => {
         // verify the system throws green success message
         await expect(forgotPasswordPage.successMessage).toContainText(' An email with a confirmation link has been sent your email address.');
     });
+
+    // test 13
+    test('Test-13: Verify the Forgot Password displays error message warning for unregistered email', async ({ page }) => {
+        // initialize both page objects 
+        const loginPage = new LoginPage(page);
+        const forgotPasswordPage = new ForgotPasswordPage(page);
+        // Navigate to the login screen first
+        await loginPage.navigate();
+        await loginPage.navigateToLogin();
+        await loginPage.clickForgotPassword();
+        // generate a unique, unregistered email
+        const invalidEmail = `invalid${Date.now()}@gmail.com`;
+        await forgotPasswordPage.requestPasswordReset(invalidEmail);
+        // verify the system rejects the request and throws a warning message
+        await expect(forgotPasswordPage.warningMessage).toContainText(' Warning: The E-Mail Address was not found in our records, please try again!');
+    });
 });
