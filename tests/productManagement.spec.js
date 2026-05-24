@@ -66,4 +66,17 @@ test.describe('Product Management Service Tests', () => {
         await expect(await productPage.productCards.count()).toBeGreaterThan(0);
         await expect(productPage.productCards.first()).toBeVisible();
     });
+
+    // test 05
+    test('Test-05: Verify navigating to a main category from top navigation bar', async ({ page }) => {
+        const productPage = new ProductPage(page);
+        await productPage.navigate();
+        await productPage.navigateToDesktopCategory();
+        // verify the system routes us to the category page
+        await expect(page).toHaveURL(/.*route=product\/category/);
+        // verify header on the page says "Desktops"
+        await expect(await productPage.productNameHeader).toHaveText('Desktops');
+        // verify page loaded products
+        await expect(await productPage.productCards.count()).toBeGreaterThan(0);
+    });
 })
