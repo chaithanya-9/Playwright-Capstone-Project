@@ -58,10 +58,10 @@ class ProductPage extends BasePage {
     // extract the ratings (0-5) for every product on the screen
     async getProductRatings() {
         const ratings = [];
-        const count = this.productCards.count();
+        const count = await this.productCards.count();
         // loop through each product card
         for (let i = 0; i < count; i++) {
-            const card = this.productCards.nth(i);
+            const card = await this.productCards.nth(i);
             // check if product even has rating
             const hasRating = await card.locator('.rating').isVisible();
             if (hasRating) {
