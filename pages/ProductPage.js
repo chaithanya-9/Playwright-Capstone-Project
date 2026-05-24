@@ -19,6 +19,11 @@ class ProductPage extends BasePage {
         this.submitReviewButton = page.getByRole('button', { name: 'Continue' });
         this.reviewSuccessMessage = page.locator('.alert-success');
         this.reviewWarningMessage = page.locator('.alert-danger');
+        // Locator for empty search results
+        this.emptySearchMessage = page.getByText('There is no product that matches the search criteria.');
+        // search locator on search results page
+        this.descriptionCheckbox = page.getByLabel('Search in product descriptions');
+        this.advanceSearchButton = page.locator('#button-search');
     }
     // select an option from the Sort By dropdown using visible text
     async sortProductBy(visibleText) {
