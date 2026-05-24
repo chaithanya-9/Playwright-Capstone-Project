@@ -4,12 +4,13 @@ class ProductPage extends BasePage {
     constructor(page) {
         super(page);
         // search results page locators
-        this.listViewButton = page.getByRole('button', { name: 'List' });
-        this.gridViewButton = page.getByRole('button', { name: 'Grid' });
+        this.listViewButton = page.locator('#list-view');
+        this.gridViewButton = page.locator('#grid-view');
         this.sortByDropdown = page.getByLabel('Sort By:');
         this.productCards = page.locator('.product-thumb');
         // product details page locators
-        this.productNameHeader = page.getByRole('heading', { name: 'Desktops' });
+        this.productNameHeader = page.getByRole('heading', { level: 1 });
+        this.categoryHeader = page.getByRole('heading', { level: 2 });
         this.addToCartButton = page.getByRole('button', { name: 'Add to Cart' });
         // product review locators
         this.reviewTab = page.getByRole('link', { name: /Reviews/ });
@@ -24,6 +25,9 @@ class ProductPage extends BasePage {
         // search locator on search results page
         this.descriptionCheckbox = page.getByLabel('Search in product descriptions');
         this.advanceSearchButton = page.locator('#button-search');
+        // left side bar locators
+        this.sidebarMacLink = page.getByRole('link', { name: /- Mac/ });
+
     }
     // select an option from the Sort By dropdown using visible text
     async sortProductBy(visibleText) {
@@ -37,6 +41,19 @@ class ProductPage extends BasePage {
         // filter radio groupdown to the specific rating value(1-5) and check it
         await this.ratingRadioButtons.locator(`[value="${ratingValue}"]`).check();
         await this.submitReviewButton.click();
+    }
+    // extracts all prices from the current product grid and returns them as an array of numbers
+    async getProductPrices() {
+        // grab the raw text of every price tag on the page
+        const priceTexts = await this.productCards.locator('.price').allInnerTexts();
+        // loop through the messy text and convert it to clean numbers
+        return priceTexts.map(text => {
+            // split the text to ignore the "Ex Tax:" portion on the second line
+            const mainPrice = text.split('\n')[0];
+            // strip out the $ and commas, then convert the string into a decimal number
+            const cleanNumber = parseFloat(mainPrice.replace(/[^0-9.]/g, ''));
+            return cleanNumber;
+        });
     }
 }
 module.exports = { ProductPage };
