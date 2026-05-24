@@ -34,4 +34,19 @@ test.describe('Product Management Service Tests', () => {
         // check for no product cards rendered
         await expect(await productPage.productCards.count()).toEqual(0);
     });
+
+    // test 03 
+    test('Test-03: Verify submitting an empty search throws the correct warning message', async ({ page }) => {
+        const productPage = new ProductPage(page);
+        // navigate to website
+        await productPage.navigate();
+        // submit empty search
+        await productPage.searchForProduct('');
+        // verify URL still routes to search page
+        await expect(page).toHaveURL(/.*route=product\/search/);
+        // verify warning message
+        await expect(productPage.emptySearchMessage).toBeVisible();
+        // check for no product cards rendered
+        await expect(productPage.productCards).toHaveCount(0);
+    });
 })
