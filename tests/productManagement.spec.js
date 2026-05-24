@@ -113,7 +113,7 @@ test.describe('Product Management Service Tests', () => {
     });
 
     // test 08
-    test('Test-08: Verify sorting products by Price (Low > High) correctly orders the results', async ({ page }) => {
+    test.only('Test-08: Verify sorting products by Price (Low > High) correctly orders the results', async ({ page }) => {
         const productPage = new ProductPage(page);
         await productPage.navigate();
         await productPage.searchForProduct('Mac');
@@ -129,6 +129,25 @@ test.describe('Product Management Service Tests', () => {
         // loop through the array and prove that each price is less than or equal to the next one
         for (let i = 0; i < prices.length - 1; i++) {
             expect(prices[i]).toBeLessThanOrEqual(prices[i + 1]);
+        }
+    });
+
+    // test 09
+    test('Test-09: Verify sorting products by rating highest and check correctly orders the results', async ({ page }) => {
+        const productPage = new ProductPage(page);
+        await productPage.navigate();
+        await productPage.searchForProduct('Mac');
+        // select the "Rating (Highest)" sort option
+        await productPage.sortProductBy('Rating (Highest)');
+        // wait for the URL to update so we know the page reloaded
+        await expect(page).toHaveURL(/.*sort=rating&order=DESC/);
+        // use getProductRatings method to count the stars on the newly sorted page
+        const ratings = await productPage.getProductRatings();
+        // verify we have items on the screen
+        expect(ratings.length).toBeGreaterThan(0);
+        // loop through the array and check that each rating is GREATER THAN or EQUAL to the next one
+        for (let i = 0; i < ratings.length - 1; i++) {
+            expect(ratings[i]).toBeGreaterThanOrEqual(ratings[i + 1]);
         }
     });
 })
