@@ -7,6 +7,7 @@ class ProductPage extends BasePage {
         this.listViewButton = page.locator('#list-view');
         this.gridViewButton = page.locator('#grid-view');
         this.sortByDropdown = page.getByLabel('Sort By:');
+        this.showLimitDropdown = page.getByLabel('Show:');
         this.productCards = page.locator('.product-thumb');
         // product details page locators
         this.productNameHeader = page.getByRole('heading', { level: 1 });
@@ -74,6 +75,10 @@ class ProductPage extends BasePage {
             }
         }
         return ratings;
+    }
+    // Selects an option from the 'Show' limit dropdown
+    async selectShowLimit(limitText) {
+        await this.showLimitDropdown.selectOption({ label: limitText });
     }
 }
 module.exports = { ProductPage };
