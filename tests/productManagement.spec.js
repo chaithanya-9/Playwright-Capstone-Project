@@ -20,4 +20,18 @@ test.describe('Product Management Service Tests', () => {
         // check only for first product card because we already checked resultCount is greater than 0 and checked for first card to be visible so we save time not checking for rest of the cards 
     });
 
+    // test 02
+    test('Test-02: Verify searching for a non existing product displays the empty results message', async ({ page }) => {
+        const productPage = new ProductPage(page);
+        // navigate to website
+        await productPage.navigate();
+        // search for a product that is not exist in database
+        await productPage.searchForProduct('random product');
+        // verify URL still routes to search page
+        await expect(page).toHaveURL(/.*route=product\/search/);
+        // verify warning message
+        await expect(productPage.emptySearchMessage).toBeVisible();
+        // check for no product cards rendered
+        await expect(await productPage.productCards.count()).toEqual(0);
+    });
 })
