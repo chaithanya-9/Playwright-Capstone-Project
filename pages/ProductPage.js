@@ -9,7 +9,7 @@ class ProductPage extends BasePage {
         this.sortByDropdown = page.getByLabel('Sort By:');
         this.productCards = page.locator('.product-thumb');
         // product details page locators
-        this.productNameHeader = page.getByRole('heading', { level: 1 });
+        this.productNameHeader = page.getByRole('heading', { name: 'Desktops' });
         this.addToCartButton = page.getByRole('button', { name: 'Add to Cart' });
         // product review locators
         this.reviewTab = page.getByRole('link', { name: /Reviews/ });
