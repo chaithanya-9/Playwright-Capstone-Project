@@ -75,8 +75,23 @@ test.describe('Product Management Service Tests', () => {
         // verify the system routes us to the category page
         await expect(page).toHaveURL(/.*route=product\/category/);
         // verify header on the page says "Desktops"
-        await expect(await productPage.productNameHeader).toHaveText('Desktops');
+        await expect(productPage.categoryHeader).toHaveText('Desktops');
         // verify page loaded products
-        await expect(await productPage.productCards.count()).toBeGreaterThan(0);
+        expect(await productPage.productCards.count()).toBeGreaterThan(0);
+    });
+
+    // test 06
+    test('Test-06: Verify navigating to sub category from leftside menu', async ({ page }) => {
+        const productPage = new ProductPage(page);
+        await productPage.navigate();
+        await productPage.navigateToDesktopCategory();
+        // click the MAc sub category from side menu
+        await productPage.sidebarMacLink.click();
+        // verify the URL still points to a category routing path
+        await expect(page).toHaveURL(/.*route=product\/category/);
+        // verify generic category header updated to Mac
+        await expect(productPage.categoryHeader).toHaveText('Mac');
+        // verify that the Mac sub category loaded its products
+        expect(await productPage.productCards.count()).toBeGreaterThan(0);
     });
 })
