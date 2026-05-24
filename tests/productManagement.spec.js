@@ -111,4 +111,24 @@ test.describe('Product Management Service Tests', () => {
         // verify the UI successfully tranformed and the first product is still visible
         await expect(productPage.productCards.first()).toBeVisible();
     });
+
+    // test 08
+    test('Test-08: Verify sorting products by Price (Low > High) correctly orders the results', async ({ page }) => {
+        const productPage = new ProductPage(page);
+        await productPage.navigate();
+        await productPage.searchForProduct('Mac');
+        // select the sort option 
+        await productPage.sortProductBy('Price (Low > High)');
+        // wait for the URL to update with the sort parameters 
+        // if we don't wait for this, playwright will grab the prices before the page finishes reloading
+        await expect(page).toHaveURL(/.*sort=p.price&order=ASC/);
+        // use getProductPrices() method to get the clean array of numbers
+        const prices = await productPage.getProductPrices();
+        // verify we have at least 2 products to compare
+        expect(prices.length).toBeGreaterThan(1);
+        // loop through the array and prove that each price is less than or equal to the next one
+        for (let i = 0; i < prices.length - 1; i++) {
+            expect(prices[i]).toBeLessThanOrEqual(prices[i + 1]);
+        }
+    });
 })
