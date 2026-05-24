@@ -42,7 +42,7 @@ class ProductPage extends BasePage {
         await this.ratingRadioButtons.locator(`[value="${ratingValue}"]`).check();
         await this.submitReviewButton.click();
     }
-    // extracts all prices from the current product grid and returns them as an array of numbers
+    // extract all prices from the current product grid and returns them as an array of numbers
     async getProductPrices() {
         // grab the raw text of every price tag on the page
         const priceTexts = await this.productCards.locator('.price').allInnerTexts();
@@ -54,6 +54,26 @@ class ProductPage extends BasePage {
             const cleanNumber = parseFloat(mainPrice.replace(/[^0-9.]/g, ''));
             return cleanNumber;
         });
+    }
+    // extract the ratings (0-5) for every product on the screen
+    async getProductRatings() {
+        const ratings = [];
+        const count = this.productCards.count();
+        // loop through each product card
+        for (let i = 0; i < count; i++) {
+            const card = this.productCards.nth(i);
+            // check if product even has rating
+            const hasRating = await card.locator('.rating').isVisible();
+            if (hasRating) {
+                // in OpenCart, the class '.fa-stack-2x.fa-star' usually represents a solid, filled-in star
+                const filledStars = await card.locator('.rating .fa-star').count();
+                ratings.push(filledStars);
+            } else {
+                // if there is no rating section, the product has 0 stars
+                ratings.push(0);
+            }
+        }
+        return ratings;
     }
 }
 module.exports = { ProductPage };
