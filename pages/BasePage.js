@@ -11,6 +11,9 @@ class BasePage {
         this.shoppingCartLink = page.locator('a[title="Shopping Cart"]');
         this.checkoutLink = page.locator('a[title="Checkout"]');
         this.logoutLink = page.locator('.dropdown-menu').getByRole('link', { name: 'Logout' });
+        // navigation menu locators 
+        this.topMenuDesktops = page.getByRole('link', { name: 'Desktops', exact: true });
+        this.showAllDesktops = page.getByRole('link', { name: 'Show All Desktops' });
     }
     // navigate to the base URL
     async navigate() {
@@ -39,6 +42,11 @@ class BasePage {
     async clickLogout() {
         await this.clickMyAccount();
         await this.logoutLink.click();
+    }
+    // navigates to the main desktop category page
+    async navigateToDesktopCategory() {
+        await this.topMenuDesktops.click();
+        await this.showAllDesktops.click();
     }
 }
 module.exports = { BasePage };
