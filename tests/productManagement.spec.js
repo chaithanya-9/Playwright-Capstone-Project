@@ -49,4 +49,21 @@ test.describe('Product Management Service Tests', () => {
         // check for no product cards rendered
         await expect(productPage.productCards).toHaveCount(0);
     });
+
+    // test 04
+    test('Test-04: Verify search in product descriptions checkbox finds secondary keywords', async ({ page }) => {
+        const productPage = new ProductPage(page);
+        await productPage.navigate();
+        await productPage.searchForProduct('processor');
+        // verify normal search fails to retrieve
+        await expect(productPage.emptySearchMessage).toBeVisible();
+        await expect(productPage.productCards).toHaveCount(0);
+        // check the search in product description checkbox
+        await productPage.descriptionCheckbox.check();
+        // click the secondary advance search under description chekbox
+        await productPage.advanceSearchButton.click();
+        // verify product cards rendered
+        await expect(await productPage.productCards.count()).toBeGreaterThan(0);
+        await expect(productPage.productCards.first()).toBeVisible();
+    });
 })
