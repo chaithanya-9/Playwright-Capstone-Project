@@ -150,4 +150,23 @@ test.describe('Product Management Service Tests', () => {
             expect(ratings[i]).toBeGreaterThanOrEqual(ratings[i + 1]);
         }
     });
+
+    // test 10
+    test('Test-10: Verify the Show dropdown correctly limits the maximum number of products displayed', async ({ page }) => {
+        const productPage = new ProductPage(page);
+        await productPage.navigate();
+        // search for a blank string to pull up all products in the store
+        await productPage.searchForProduct(' ');
+        // select '25' from the Show dropdown (OpenCart defaults to 15)
+        await productPage.selectShowLimit('25');
+        // wait for the URL to reflect the new limit query parameter
+        await expect(page).toHaveURL(/.*limit=25/);
+        // handle the race condition, Wait for the old products to clear and new ones to render
+        await page.waitForLoadState('networkidle');
+        // count the rendered products
+        const count = await productPage.productCards.count();
+        // verify we have products, but not more than the 25 we requested
+        expect(count).toBeGreaterThan(0);
+        expect(count).toBeLessThanOrEqual(25);
+    });
 })
