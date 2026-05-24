@@ -94,4 +94,21 @@ test.describe('Product Management Service Tests', () => {
         // verify that the Mac sub category loaded its products
         expect(await productPage.productCards.count()).toBeGreaterThan(0);
     });
+
+    // test 07
+    test('Test-07: Verify switching between List View and Grid View on the search results page', async ({ page }) => {
+        const productPage = new ProductPage(page);
+        await productPage.navigate();
+        await productPage.searchForProduct('Mac');
+        // verify products rendered on the screen to interact 
+        expect(await productPage.productCards.count()).toBeGreaterThan(0);
+        // switch to List View
+        await productPage.listViewButton.click();
+        // verify the UI successfully tranformed and the first product is still visible
+        await expect(productPage.productCards.first()).toBeVisible();
+        // switch back to Grid View
+        await productPage.gridViewButton.click();
+        // verify the UI successfully tranformed and the first product is still visible
+        await expect(productPage.productCards.first()).toBeVisible();
+    });
 })
