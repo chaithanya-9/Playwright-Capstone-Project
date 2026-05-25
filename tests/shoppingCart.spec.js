@@ -77,4 +77,21 @@ test.describe('Shopping Cart Tests', () => {
         // .not asserts that the condition is not met 
         await expect(miniCartTotal).not.toContainText('$0.00');
     });
+
+    // test 05
+    test('Test-05: Verify removing a product via the Mini-Cart dropdown successfully deletes the item', async ({ page }) => {
+        const cartPage = new CartPage(page);
+        await cartPage.navigate();
+        const firstFeaturedProductAddBtn = page.getByRole('button', { name: 'Add to Cart' }).first();
+        await firstFeaturedProductAddBtn.click();
+        await cartPage.openMiniCart();
+        // verify the product is visible in the MiniCart before we delete it
+        const miniCartContainer = page.locator('#cart');
+        const productLink = miniCartContainer.getByRole('link', { name: 'MacBook' }).first();
+        await expect(productLink).toBeVisible();
+        // click the Remove button inside the minicart
+        await cartPage.miniCartRemoveButton.click();
+        // verify the MiniCart total updates to indicate its empty
+        await expect(cartPage.miniCartButton).toContainText('0 item(s)');
+    });
 });
