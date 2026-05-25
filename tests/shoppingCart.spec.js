@@ -239,4 +239,18 @@ test.describe('Shopping Cart Tests', () => {
         await expect(dropdownValidationError).toBeVisible();
         await expect(dropdownValidationError).toContainText('Please select a region / state!');
     });
+
+    // test 14
+    test('Test-14: Verify the "Continue Shopping" button redirects to the homepage', async ({ page }) => {
+        const cartPage = new CartPage(page);
+        await cartPage.navigate();
+        await page.getByRole('button', { name: 'Add to Cart' }).first().click();
+        await cartPage.navigateToMainCart();
+        // ensure we actually landed on the cart page first
+        await expect(page).toHaveURL(/.*route=checkout\/cart/);
+        // click the "Continue Shopping" button
+        await cartPage.continueShoppingButton.click();
+        // verify the system routes the user back to the homepage
+        await expect(page).toHaveURL('https://naveenautomationlabs.com/opencart/index.php?route=common/home');
+    });
 });
