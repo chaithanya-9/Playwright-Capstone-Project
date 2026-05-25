@@ -192,7 +192,7 @@ test.describe('Shopping Cart Tests', () => {
     });
 
     // test 11
-    test('Test-11: Verify applying an invalid Coupon Code triggers the correct error warning message', async ({ page }) => {
+    test('Test-11: Verify applying an invalid Coupon Code triggers the correct warning message', async ({ page }) => {
         const cartPage = new CartPage(page);
         await cartPage.navigate();
         await page.getByRole('button', { name: 'Add to Cart' }).first().click();
@@ -206,7 +206,7 @@ test.describe('Shopping Cart Tests', () => {
     });
 
     // test 12
-    test('Test-12: Verify applying an invalid Gift Certificate triggers the correct red warning banner', async ({ page }) => {
+    test('Test-12: Verify applying an invalid Gift Certificate triggers the correct warning message', async ({ page }) => {
         const cartPage = new CartPage(page);
         await cartPage.navigate();
         await page.getByRole('button', { name: 'Add to Cart' }).first().click();
@@ -217,5 +217,26 @@ test.describe('Shopping Cart Tests', () => {
         // verify the system rejects it and throws the correct warning message
         await expect(cartPage.warningMessage).toBeVisible();
         await expect(cartPage.warningMessage).toContainText('Warning: Gift Certificate is either invalid or the balance has been used up!');
+    });
+
+    // test 13
+    test('Test-13: Verify the Estimate Shipping & Taxes accordion requires country/zone selections', async ({ page }) => {
+        const cartPage = new CartPage(page);
+        //  navigate directly to the iPhone
+        await page.goto('https://naveenautomationlabs.com/opencart/index.php?route=product/product&product_id=40');
+        await page.locator('#button-cart').click();
+        await expect(cartPage.successMessage).toBeVisible();
+        await cartPage.navigateToMainCart();
+        // open the Estimate Shipping accordion
+        await cartPage.estimateShippingAccordion.click();
+        // verify the form fields actually rendered on the screen
+        await expect(cartPage.shippingCountryDropdown).toBeVisible();
+        await expect(cartPage.shippingZoneDropdown).toBeVisible();
+        // force a validation error by clicking Get Quotes with an empty form
+        await cartPage.getQuotesButton.click();
+        // verify the system blocks the action and throws a validation error message
+        const dropdownValidationError = page.locator('.text-danger').first();
+        await expect(dropdownValidationError).toBeVisible();
+        await expect(dropdownValidationError).toContainText('Please select a region / state!');
     });
 });
