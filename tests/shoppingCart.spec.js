@@ -151,4 +151,20 @@ test.describe('Shopping Cart Tests', () => {
         // ensure the header MiniCart also updated globally
         await expect(cartPage.miniCartButton).toContainText('0 item(s)');
     });
+
+    // test 09
+    test('Test-09: Verify adding a complex product without mandatory options triggers validation errors', async ({ page }) => {
+        const cartPage = new CartPage(page);
+        // direct navigation to the Apple Cinema 30 product page
+        await page.goto('https://naveenautomationlabs.com/opencart/index.php?route=product/product&product_id=42');
+        // locate and click the primary "Add to Cart" button on the product detail page
+        const productPageAddToCartBtn = page.locator('#button-cart');
+        await productPageAddToCartBtn.click();
+        // verify OpenCart's specific validation error texts appear
+        await expect(page.getByText('Radio required!')).toBeVisible();
+        await expect(page.getByText('Checkbox required!')).toBeVisible();
+        await expect(page.getByText('Select required!')).toBeVisible();
+        // verify success message never renders
+        await expect(cartPage.successMessage).toBeHidden();
+    });
 });
