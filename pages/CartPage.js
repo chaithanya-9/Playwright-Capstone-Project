@@ -24,6 +24,11 @@ class CartPage extends BasePage {
         this.emptyCartMessage = page.locator('#content').getByText('Your shopping cart is empty!');
         this.successMessage = page.locator('.alert-success');
         this.warningMessage = page.locator('.alert-danger');
+        // calculation locators
+        this.totalsSubTotal = page.locator('table.table-bordered').last().locator('tr').filter({ hasText: 'Sub-Total:' }).locator('td').last();
+        this.totalsEcoTax = page.locator('table.table-bordered').last().locator('tr').filter({ hasText: 'Eco Tax' }).locator('td').last();
+        this.totalsVAT = page.locator('table.table-bordered').last().locator('tr').filter({ hasText: 'VAT' }).locator('td').last();
+        this.totalsFinal = page.locator('table.table-bordered').last().locator('tr').filter({ hasText: 'Total:' }).locator('td').last();
     }
     // action methods
     // opens the mini cart dropdown from top right header
