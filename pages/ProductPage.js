@@ -31,7 +31,10 @@ class ProductPage extends BasePage {
         this.advanceSearchButton = page.locator('#button-search');
         // left side bar locators
         this.sidebarMacLink = page.getByRole('link', { name: /- Mac/ });
-
+        // image lightbox locators
+        this.mainProductImage = page.locator('ul.thumbnails li:first-child a');
+        this.lightboxModal = page.locator('.mfp-wrap');
+        this.lightboxCloseButton = page.locator('.mfp-close');
     }
     // select an option from the Sort By dropdown using visible text
     async sortProductBy(visibleText) {
