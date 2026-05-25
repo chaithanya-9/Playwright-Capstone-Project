@@ -13,6 +13,9 @@ class ProductPage extends BasePage {
         this.productNameHeader = page.getByRole('heading', { level: 1 });
         this.categoryHeader = page.getByRole('heading', { level: 2 });
         this.addToCartButton = page.getByRole('button', { name: 'Add to Cart' });
+        this.brandLabel = page.getByText('Brand:');
+        this.productCodeLabel = page.getByText('Product Code:');
+        this.priceTag = page.locator('h2').filter({ hasText: '$' });
         // product review locators
         this.reviewTab = page.getByRole('link', { name: /Reviews/ });
         this.reviewerNameInput = page.getByLabel('Your Name');
