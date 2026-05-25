@@ -169,7 +169,7 @@ test.describe('Shopping Cart Tests', () => {
     });
 
     // test 10
-    test.only('Test-10: Verify the cart accurately calculates Subtotal, Taxes, and Total', async ({ page }) => {
+    test('Test-10: Verify the cart accurately calculates Subtotal, Taxes, and Total', async ({ page }) => {
         const cartPage = new CartPage(page);
         await page.goto('https://naveenautomationlabs.com/opencart/index.php?route=product/product&product_id=40');
         await page.locator('#button-cart').click();
@@ -189,5 +189,19 @@ test.describe('Shopping Cart Tests', () => {
         // verify the calculation matches the UI
         // use .toBeCloseTo() instead of .toBe() to protect against Javascript decimal rounding errors
         expect(calculatedTotal).toBeCloseTo(displayedTotal, 2);
+    });
+
+    // test 11
+    test.only('Test-11: Verify applying an invalid Coupon Code triggers the correct red warning banner', async ({ page }) => {
+        const cartPage = new CartPage(page);
+        await cartPage.navigate();
+        await page.getByRole('button', { name: 'Add to Cart' }).first().click();
+        await expect(cartPage.successMessage).toBeVisible();
+        await cartPage.navigateToMainCart();
+        // fill invalid code and apply coupon
+        await cartPage.applyCoupon('INVALID_CODE_123');
+        // verify the system catches the invalid code and renders warning message
+        await expect(cartPage.warningMessage).toBeVisible();
+        await expect(cartPage.warningMessage).toContainText('Warning: Coupon is either invalid, expired or reached its usage limit!');
     });
 });
