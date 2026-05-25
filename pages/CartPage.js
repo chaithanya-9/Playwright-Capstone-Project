@@ -15,7 +15,7 @@ class CartPage extends BasePage {
         this.quantityInput = page.locator('div.input-group.btn-block input[type="text"]');
         this.couponAccordion = page.getByRole('link', { name: 'Use Coupon Code' });
         this.giftCertificateAccordion = page.getByRole('link', { name: 'Use Gift Certificate' });
-        this.estimateShippingAccordion = page.getByRole('link', { name: 'Estimate Shipping & Taxes' });
+        this.estimateShippingAccordion = page.getByText('Estimate Shipping & Taxes');
         this.couponInput = page.getByPlaceholder('Enter your coupon here');
         this.giftCertificateInput = page.getByPlaceholder('Enter your gift certificate code here');
         this.applyCouponButton = page.getByRole('button', { name: 'Apply Coupon' });
@@ -29,6 +29,10 @@ class CartPage extends BasePage {
         this.totalsEcoTax = page.locator('table.table-bordered').last().locator('tr').filter({ hasText: 'Eco Tax' }).locator('td').last();
         this.totalsVAT = page.locator('table.table-bordered').last().locator('tr').filter({ hasText: 'VAT' }).locator('td').last();
         this.totalsFinal = page.locator('table.table-bordered').last().locator('tr').filter({ hasText: 'Total:' }).locator('td').last();
+        // estimate shipping locators
+        this.shippingCountryDropdown = page.locator('#input-country');
+        this.shippingZoneDropdown = page.locator('#input-zone');
+        this.getQuotesButton = page.getByRole('button', { name: 'Get Quotes' });
     }
     // action methods
     // opens the mini cart dropdown from top right header
