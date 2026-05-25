@@ -114,4 +114,25 @@ test.describe('Shopping Cart Tests', () => {
         const productInCart = cartTable.getByRole('link', { name: 'MacBook' }).first();
         await expect(productInCart).toBeVisible();
     });
+
+    // test 07
+    test('Test-07: Verify updating the quantity of a product recalculates the total', async ({ page }) => {
+        const cartPage = new CartPage(page);
+        await cartPage.navigate();
+        const firstFeaturedProductAddBtn = page.getByRole('button', { name: 'Add to Cart' }).first();
+        await firstFeaturedProductAddBtn.click();
+        await expect(cartPage.successMessage).toBeVisible();
+        await cartPage.navigateToMainCart();
+        // locate the specific total column for the item
+        const itemTotal = page.locator('.table-responsive tbody .text-right').last();
+        // capture the initial price as a string
+        const initialPriceText = await itemTotal.innerText();
+        // update the quantity to 2 using POM helper method
+        await cartPage.updateFirstItemQuantity('2');
+        // verify the system throws the specific modified success message
+        await expect(cartPage.successMessage).toBeVisible();
+        await expect(cartPage.successMessage).toContainText('Success: You have modified your shopping cart');
+        // verify the math recalculated
+        await expect(itemTotal).not.toHaveText(initialPriceText);
+    });
 });
