@@ -253,4 +253,17 @@ test.describe('Shopping Cart Tests', () => {
         // verify the system routes the user back to the homepage
         await expect(page).toHaveURL('https://naveenautomationlabs.com/opencart/index.php?route=common/home');
     });
+
+    // test 15
+    test('Test-15: Verify attempting to proceed to checkout with an empty cart is handled', async ({ page }) => {
+        const cartPage = new CartPage(page);
+        await cartPage.navigate();
+        // attempt to force entry into the checkout flow
+        await cartPage.checkoutButton.first().click();
+        // verify the system router rejected the checkout attempt
+        await expect(page).not.toHaveURL(/.*route=checkout\/checkout/);
+        await expect(page).toHaveURL(/.*route=checkout\/cart/);
+        // verify the error handling
+        await expect(cartPage.emptyCartMessage).toBeVisible();
+    });
 });
