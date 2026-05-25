@@ -240,4 +240,23 @@ test.describe('Product Management Service Tests', () => {
         await expect(productPage.reviewSuccessMessage).toBeVisible();
         await expect(productPage.reviewSuccessMessage).toContainText('Thank you for your review. It has been submitted to the webmaster for approval.');
     });
+
+    // test 15
+    test('Test-15: Verify submitting a product review with missing data triggers a warning', async ({ page }) => {
+        const productPage = new ProductPage(page);
+        await productPage.navigate();
+        await productPage.searchForProduct('MacBook');
+        await expect(productPage.productCards.first()).toBeVisible();
+        await productPage.openFirstProduct();
+        // open the review tab
+        await productPage.reviewTab.click();
+        // fill the text but dont select rating
+        await productPage.reviewerNameInput.fill('QA Tester');
+        await productPage.reviewTextInput.fill('This is a test review, but I am intentionally forgetting to click a star rating');
+        // submit the incomplete form
+        await productPage.submitReviewButton.click();
+        // verify the system rejects the review and displays the red warning message
+        await expect(productPage.reviewWarningMessage).toBeVisible();
+        await expect(productPage.reviewWarningMessage).toContainText('Warning: Please select a review rating!');
+    });
 })
