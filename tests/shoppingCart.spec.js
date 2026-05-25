@@ -94,4 +94,24 @@ test.describe('Shopping Cart Tests', () => {
         // verify the MiniCart total updates to indicate its empty
         await expect(cartPage.miniCartButton).toContainText('0 item(s)');
     });
+
+    // test 06
+    test('Test-06: Verify navigating to the main View Cart page renders all added products in the grid', async ({ page }) => {
+        const cartPage = new CartPage(page);
+        await cartPage.navigate();
+        const firstFeaturedProductAddBtn = page.getByRole('button', { name: 'Add to Cart' }).first();
+        await firstFeaturedProductAddBtn.click();
+        // Wait for the success message to ensure the API call finished
+        await expect(cartPage.successMessage).toBeVisible();
+        // navigate to the maincart page using POM helper method
+        await cartPage.navigateToMainCart();
+        // verify the URL routed correctly
+        await expect(page).toHaveURL(/.*route=checkout\/cart/);
+        // verify the product table container is visible
+        const cartTable = page.locator('.table-responsive').first();
+        await expect(cartTable).toBeVisible();
+        // verify the specific product that added exists in the table grid
+        const productInCart = cartTable.getByRole('link', { name: 'MacBook' }).first();
+        await expect(productInCart).toBeVisible();
+    });
 });
