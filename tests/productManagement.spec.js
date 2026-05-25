@@ -205,4 +205,23 @@ test.describe('Product Management Service Tests', () => {
         // verify the Price tag is visible
         await expect(productPage.priceTag).toBeVisible();
     });
+
+    // test 13
+    test('Test-13: Verify the main product image can be clicked and opened in the lightbox modal', async ({ page }) => {
+        const productPage = new ProductPage(page);
+        await productPage.navigate();
+        await productPage.searchForProduct('MacBook');
+        await expect(productPage.productCards.first()).toBeVisible();
+        await productPage.openFirstProduct();
+        // click the main product image on the PDP
+        await productPage.mainProductImage.click();
+        // verify the lightbox modal renders on the screen
+        await expect(productPage.lightboxModal).toBeVisible();
+        // click the X button to close the modal
+        await productPage.lightboxCloseButton.click();
+        // verify the modal disappears
+        await expect(productPage.lightboxModal).toBeHidden();
+    });
+
+
 })
