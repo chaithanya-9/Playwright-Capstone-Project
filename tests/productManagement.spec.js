@@ -184,4 +184,25 @@ test.describe('Product Management Service Tests', () => {
         // verify the Level 1 Heading matches the product we clicked on
         await expect(productPage.productNameHeader).toContainText('MacBook');
     });
+
+    // test 12
+    test('Test-12: Verify core product metadata is visible on the Product Details Page', async ({ page }) => {
+        const productPage = new ProductPage(page);
+        await productPage.navigate();
+        await productPage.searchForProduct('MacBook');
+        // wait for the search results to render
+        await expect(productPage.productCards.first()).toBeVisible();
+        // enter the Product Details Page
+        await productPage.openFirstProduct();
+        // verify we are on the PDP
+        await expect(page).toHaveURL(/.*route=product\/product.*/);
+        // verify the Product Name (h1) is visible
+        await expect(productPage.productNameHeader).toBeVisible();
+        // verify the Brand label is visible
+        await expect(productPage.brandLabel).toBeVisible();
+        // verify the Product Code label is visible
+        await expect(productPage.productCodeLabel).toBeVisible();
+        // verify the Price tag is visible
+        await expect(productPage.priceTag).toBeVisible();
+    });
 })
