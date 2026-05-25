@@ -135,4 +135,20 @@ test.describe('Shopping Cart Tests', () => {
         // verify the math recalculated
         await expect(itemTotal).not.toHaveText(initialPriceText);
     });
+
+    // test 08
+    test('Test-08: Verify removing a product using the red Remove button in the cart grid', async ({ page }) => {
+        const cartPage = new CartPage(page);
+        await cartPage.navigate();
+        const firstFeaturedProductAddBtn = page.getByRole('button', { name: 'Add to Cart' }).first();
+        await firstFeaturedProductAddBtn.click();
+        await expect(cartPage.successMessage).toBeVisible();
+        await cartPage.navigateToMainCart();
+        // click the Remove button in the cart table
+        await cartPage.removeProductButton.click();
+        // verify the system routes to the Empty Cart state
+        await expect(cartPage.emptyCartMessage).toBeVisible();
+        // ensure the header MiniCart also updated globally
+        await expect(cartPage.miniCartButton).toContainText('0 item(s)');
+    });
 });
