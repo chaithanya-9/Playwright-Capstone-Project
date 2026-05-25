@@ -167,4 +167,27 @@ test.describe('Shopping Cart Tests', () => {
         // verify success message never renders
         await expect(cartPage.successMessage).toBeHidden();
     });
+
+    // test 10
+    test.only('Test-10: Verify the cart accurately calculates Subtotal, Taxes, and Total', async ({ page }) => {
+        const cartPage = new CartPage(page);
+        await page.goto('https://naveenautomationlabs.com/opencart/index.php?route=product/product&product_id=40');
+        await page.locator('#button-cart').click();
+        await expect(cartPage.successMessage).toBeVisible();
+        // navigate to the main cart to see the summary table
+        await cartPage.navigateToMainCart();
+        // extract the raw text values from the summary table like "$500.00"
+        const subTotalText = await cartPage.totalsSubTotal.innerText();
+        const ecoTaxText = await cartPage.totalsEcoTax.innerText();
+        const vatText = await cartPage.totalsVAT.innerText();
+        const totalText = await cartPage.totalsFinal.innerText();
+        // clean the strings to do math 
+        // /g is the global so it will clean full string
+        const parsePrice = (priceStr) => parseFloat(priceStr.replace(/[$,]/g, ''));
+        const calculatedTotal = parsePrice(subTotalText) + parsePrice(ecoTaxText) + parsePrice(vatText);
+        const displayedTotal = parsePrice(totalText);
+        // verify the calculation matches the UI
+        // use .toBeCloseTo() instead of .toBe() to protect against Javascript decimal rounding errors
+        expect(calculatedTotal).toBeCloseTo(displayedTotal, 2);
+    });
 });
