@@ -42,7 +42,7 @@ test.describe('Shopping Cart Tests', () => {
     });
 
     // test 03
-    test.only('Test-03: Verify the success message appears immediately when a product is added', async ({ page }) => {
+    test('Test-03: Verify the success message appears immediately when a product is added', async ({ page }) => {
         const cartPage = new CartPage(page);
         await cartPage.navigate();
         // locate the Add to Cart button for the first featured product
@@ -56,5 +56,25 @@ test.describe('Shopping Cart Tests', () => {
         const closeBanner = cartPage.successMessage.locator('.close');
         await closeBanner.click();
         await expect(cartPage.successMessage).toBeHidden();
+    });
+
+    // test 04
+    test('Test-04: Verify the Mini-Cart header dropdown accurately displays added items and live totals', async ({ page }) => {
+        const cartPage = new CartPage(page);
+        await cartPage.navigate();
+        const firstFeaturedProductAddBtn = page.getByRole('button', { name: 'Add to Cart' }).first();
+        await firstFeaturedProductAddBtn.click();
+        // verify the success message renders
+        await expect(cartPage.successMessage).toBeVisible();
+        // open the mini-cart
+        await cartPage.openMiniCart();
+        // verify the MiniCart displays the product name
+        const miniCartProduct = page.locator('#cart');
+        const productLink = miniCartProduct.getByRole('link', { name: 'MacBook' }).first();
+        await expect(productLink).toBeVisible();
+        // verify the MiniCart displays a nonzero total price
+        const miniCartTotal = page.locator('.table-bordered td.text-right').last();
+        // .not asserts that the condition is not met 
+        await expect(miniCartTotal).not.toContainText('$0.00');
     });
 });
