@@ -223,5 +223,21 @@ test.describe('Product Management Service Tests', () => {
         await expect(productPage.lightboxModal).toBeHidden();
     });
 
-
+    // test 14
+    test('Test-14: Verify submitting a product review with valid data displays the success banner', async ({ page }) => {
+        const productPage = new ProductPage(page);
+        await productPage.navigate();
+        await productPage.searchForProduct('MacBook');
+        await expect(productPage.productCards.first()).toBeVisible();
+        await productPage.openFirstProduct();
+        // submit a valid review, in OpenCart the review should contain minimum of 25 chars
+        const validName = 'QA Tester';
+        const validReviewText = 'This MacBook is incredibly fast and has a beautiful display. Highly recommended!';
+        // passing '5' to select the 5-star radio button
+        const rating = '5';
+        await productPage.submitReview(validName, validReviewText, rating);
+        // verify the system accepts the review and displays the green success banner
+        await expect(productPage.reviewSuccessMessage).toBeVisible();
+        await expect(productPage.reviewSuccessMessage).toContainText('Thank you for your review. It has been submitted to the webmaster for approval.');
+    });
 })
