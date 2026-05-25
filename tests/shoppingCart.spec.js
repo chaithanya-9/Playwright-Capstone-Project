@@ -192,16 +192,30 @@ test.describe('Shopping Cart Tests', () => {
     });
 
     // test 11
-    test.only('Test-11: Verify applying an invalid Coupon Code triggers the correct red warning banner', async ({ page }) => {
+    test('Test-11: Verify applying an invalid Coupon Code triggers the correct error warning message', async ({ page }) => {
         const cartPage = new CartPage(page);
         await cartPage.navigate();
         await page.getByRole('button', { name: 'Add to Cart' }).first().click();
         await expect(cartPage.successMessage).toBeVisible();
         await cartPage.navigateToMainCart();
         // fill invalid code and apply coupon
-        await cartPage.applyCoupon('INVALID_CODE_123');
+        await cartPage.applyCoupon('invalidCoupon');
         // verify the system catches the invalid code and renders warning message
         await expect(cartPage.warningMessage).toBeVisible();
         await expect(cartPage.warningMessage).toContainText('Warning: Coupon is either invalid, expired or reached its usage limit!');
+    });
+
+    // test 12
+    test('Test-12: Verify applying an invalid Gift Certificate triggers the correct red warning banner', async ({ page }) => {
+        const cartPage = new CartPage(page);
+        await cartPage.navigate();
+        await page.getByRole('button', { name: 'Add to Cart' }).first().click();
+        await expect(cartPage.successMessage).toBeVisible();
+        await cartPage.navigateToMainCart();
+        // use POM helper method to apply a fake gift certificate code
+        await cartPage.applyGiftCertificate('invalidGift');
+        // verify the system rejects it and throws the correct warning message
+        await expect(cartPage.warningMessage).toBeVisible();
+        await expect(cartPage.warningMessage).toContainText('Warning: Gift Certificate is either invalid or the balance has been used up!');
     });
 });
