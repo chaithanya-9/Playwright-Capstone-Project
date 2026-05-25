@@ -10,7 +10,7 @@ class CartPage extends BasePage {
         // mini cart grid locators
         this.updateQuantityButton = page.locator('.input-group-btn .btn-primary');
         this.removeProductButton = page.locator('.input-group-btn .btn-danger');
-        this.continueShoppingButton = page.getByRole('button', { name: 'Continue Shopping' });
+        this.continueShoppingButton = page.getByRole('link', { name: 'Continue Shopping' });
         this.checkoutButton = page.getByRole('link', { name: 'Checkout', exact: true });
         this.quantityInput = page.locator('div.input-group.btn-block input[type="text"]');
         this.couponAccordion = page.getByRole('link', { name: 'Use Coupon Code' });
