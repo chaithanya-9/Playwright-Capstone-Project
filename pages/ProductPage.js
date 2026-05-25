@@ -20,7 +20,6 @@ class ProductPage extends BasePage {
         this.reviewTab = page.getByRole('link', { name: /Reviews/ });
         this.reviewerNameInput = page.getByLabel('Your Name');
         this.reviewTextInput = page.getByLabel('Your Review');
-        this.ratingRadioButtons = page.getByRole('radio');
         this.submitReviewButton = page.getByRole('button', { name: 'Continue' });
         this.reviewSuccessMessage = page.locator('.alert-success');
         this.reviewWarningMessage = page.locator('.alert-danger');
