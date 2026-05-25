@@ -40,4 +40,21 @@ test.describe('Shopping Cart Tests', () => {
         await cartPage.openMiniCart();
         await expect(cartPage.miniCartViewCartLink).toBeVisible();
     });
+
+    // test 03
+    test.only('Test-03: Verify the success message appears immediately when a product is added', async ({ page }) => {
+        const cartPage = new CartPage(page);
+        await cartPage.navigate();
+        // locate the Add to Cart button for the first featured product
+        const firstFeaturedProductAddBtn = page.getByRole('button', { name: 'Add to Cart' }).first();
+        // click add to cart
+        await firstFeaturedProductAddBtn.click();
+        // verify the specific success message text
+        await expect(cartPage.successMessage).toBeVisible();
+        await expect(cartPage.successMessage).toContainText('Success: You have added');
+        // verify the message can be dismissed by clicking the X button (if present)
+        const closeBanner = cartPage.successMessage.locator('.close');
+        await closeBanner.click();
+        await expect(cartPage.successMessage).toBeHidden();
+    });
 });
