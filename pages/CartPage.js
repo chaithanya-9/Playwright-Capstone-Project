@@ -21,7 +21,7 @@ class CartPage extends BasePage {
         this.applyCouponButton = page.getByRole('button', { name: 'Apply Coupon' });
         this.applyGiftButton = page.getByRole('button', { name: 'Apply Gift Certificate' });
         // warning message locators        
-        this.emptyCartMessage = page.getByText('Your shopping cart is empty!');
+        this.emptyCartMessage = page.locator('#content').getByText('Your shopping cart is empty!');
         this.successMessage = page.locator('.alert-success');
         this.warningMessage = page.locator('.alert-danger');
     }
