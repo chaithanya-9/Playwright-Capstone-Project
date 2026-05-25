@@ -113,7 +113,7 @@ test.describe('Product Management Service Tests', () => {
     });
 
     // test 08
-    test.only('Test-08: Verify sorting products by Price (Low > High) correctly orders the results', async ({ page }) => {
+    test('Test-08: Verify sorting products by Price (Low > High) correctly orders the results', async ({ page }) => {
         const productPage = new ProductPage(page);
         await productPage.navigate();
         await productPage.searchForProduct('Mac');
@@ -168,5 +168,20 @@ test.describe('Product Management Service Tests', () => {
         // verify we have products, but not more than the 25 we requested
         expect(count).toBeGreaterThan(0);
         expect(count).toBeLessThanOrEqual(25);
+    });
+
+    // test 11
+    test('Test-11: Verify clicking a product thumbnail navigates to the correct Product Details Page', async ({ page }) => {
+        const productPage = new ProductPage(page);
+        await productPage.navigate();
+        await productPage.searchForProduct('MacBook');
+        // wait for the search results to render
+        await expect(productPage.productCards.first()).toBeVisible();
+        // click the first product thumbnail to enter the Product Details Page
+        await productPage.openFirstProduct();
+        // verify the system routed to a specific product page 
+        await expect(page).toHaveURL(/.*route=product\/product.*/);
+        // verify the Level 1 Heading matches the product we clicked on
+        await expect(productPage.productNameHeader).toContainText('MacBook');
     });
 })
