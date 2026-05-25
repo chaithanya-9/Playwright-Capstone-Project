@@ -46,7 +46,7 @@ class ProductPage extends BasePage {
         await this.reviewerNameInput.fill(name);
         await this.reviewTextInput.fill(reviewText);
         // filter radio groupdown to the specific rating value(1-5) and check it
-        await this.ratingRadioButtons.locator(`[value="${ratingValue}"]`).check();
+        await this.page.locator(`input[name="rating"][value="${ratingValue}"]`).check({ force: true });
         await this.submitReviewButton.click();
     }
     // extract all prices from the current product grid and returns them as an array of numbers
