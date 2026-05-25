@@ -80,5 +80,9 @@ class ProductPage extends BasePage {
     async selectShowLimit(limitText) {
         await this.showLimitDropdown.selectOption({ label: limitText });
     }
+    // opens the product details page of the first product in the grid
+    async openFirstProduct() {
+        await this.productCards.first().getByRole('img').click();
+    }
 }
 module.exports = { ProductPage };
