@@ -5,7 +5,7 @@ class CartPage extends BasePage {
         super(page);
         // mini cart locators
         this.miniCartButton = page.locator('#cart > button');
-        this.miniCartRemoveButton = page.getByRole('button', { name: 'Remove' });
+        this.miniCartRemoveButton = page.getByTitle('Remove');
         this.miniCartViewCartLink = page.getByRole('link', { name: 'View Cart' });
         // mini cart grid locators
         this.updateQuantityButton = page.getByRole('button', { name: 'Update' });
