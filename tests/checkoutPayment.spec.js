@@ -447,7 +447,7 @@ test.describe('Checkout and Payment Service', () => {
     });
 
     // test 13
-    test('Test-13: Attempt to bypass checkout steps directly via URL (Security check)', async ({ page }) => {
+    test('Test-13: Attempt to bypass checkout steps directly via URL', async ({ page }) => {
         // attempt to navigate directly to the final checkout confirmation step
         await page.goto('https://naveenautomationlabs.com/opencart/index.php?route=checkout/confirm');
         // wait for redirect
