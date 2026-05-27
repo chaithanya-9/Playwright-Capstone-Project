@@ -29,6 +29,8 @@ class CheckoutPage extends BasePage {
         this.paymentMethodContinueButton = page.locator('#button-payment-method');
         this.confirmOrderButton = page.locator('#button-confirm');
         this.successHeading = page.getByRole('heading', { name: 'Your order has been placed!' });
+        // validation locators
+        this.inputFieldWarning = page.locator('.text-danger');
     }
     // action methods
     // navigate directly to Checkout Page
