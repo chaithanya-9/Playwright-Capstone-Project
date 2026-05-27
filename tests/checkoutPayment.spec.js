@@ -233,4 +233,44 @@ test.describe('Checkout and Payment Service', () => {
         await expect(checkoutPage.confirmOrderButton).toBeVisible();
     });
 
+    // test 08
+    test('Test-08: Validate the terms and conditions checkbox behavior', async ({ page }) => {
+        const checkoutPage = new CheckoutPage(page);
+        const loginPage = new LoginPage(page);
+        // navigate to login page and authenticate
+        await checkoutPage.navigate();
+        await checkoutPage.navigateToLogin();
+        await loginPage.login('demotest@gmail.com', 'demotest');
+        // clear the cart items
+        await page.locator('#cart > button').click();
+        const itemsInCart = await page.getByTitle('Remove').count();
+        if (itemsInCart > 0) {
+            for (let i = 0; i < itemsInCart; i++) {
+                await page.getByTitle('Remove').first().click();
+                await page.waitForTimeout(500);
+            }
+        } else {
+            await page.locator('#cart > button').click();
+        }
+        // add this product to cart
+        await page.goto('https://naveenautomationlabs.com/opencart/index.php?route=product/product&product_id=47');
+        await page.locator('#button-cart').click();
+        await expect(page.locator('.alert-success')).toBeVisible();
+        // navigate directly to checkout page
+        await checkoutPage.navigateToCheckout();
+        await page.waitForTimeout(500);
+        await checkoutPage.billingAddressContinueBtn.click();
+        await page.waitForTimeout(500);
+        await checkoutPage.deliveryAddressContinueBtn.click();
+        await expect(checkoutPage.shippingMethodContinueButton).toBeVisible();
+        await checkoutPage.shippingMethodContinueButton.click();
+        // payment method, attempt to proceed without checking terms
+        await expect(checkoutPage.paymentMethodContinueButton).toBeVisible();
+        await page.waitForTimeout(500);
+        await checkoutPage.paymentMethodContinueButton.click();
+        // verify terms and conditions warning banner appears
+        await expect(checkoutPage.warningBanner).toBeVisible();
+        await expect(checkoutPage.warningBanner).toContainText('Warning: You must agree to the Terms & Conditions!');
+    });
+
 })
