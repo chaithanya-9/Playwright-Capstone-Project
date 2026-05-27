@@ -402,4 +402,48 @@ test.describe('Checkout and Payment Service', () => {
         await expect(checkoutPage.successHeading).toHaveText('Your order has been placed!');
     });
 
+    // test 12
+    test('Test-12: Verify the Continue button on the success page redirects to Home', async ({ page }) => {
+        const checkoutPage = new CheckoutPage(page);
+        const loginPage = new LoginPage(page);
+        // navigate to login and authenticate
+        await checkoutPage.navigate();
+        await checkoutPage.navigateToLogin();
+        await loginPage.login('demotest@gmail.com', 'demotest');
+        // clear the cart items
+        await page.locator('#cart > button').click();
+        const itemsInCart = await page.getByTitle('Remove').count();
+        if (itemsInCart > 0) {
+            for (let i = 0; i < itemsInCart; i++) {
+                await page.getByTitle('Remove').first().click();
+                await page.waitForTimeout(500);
+            }
+        } else {
+            await page.locator('#cart > button').click();
+        }
+        // add this product to cart
+        await page.goto('https://naveenautomationlabs.com/opencart/index.php?route=product/product&product_id=47');
+        await page.locator('#button-cart').click();
+        await expect(page.locator('.alert-success')).toBeVisible();
+        // navigate directly to checkout page
+        await checkoutPage.navigateToCheckout();
+        // complete all steps to reach success page
+        await page.waitForTimeout(500);
+        await checkoutPage.billingAddressContinueBtn.click();
+        await page.waitForTimeout(500);
+        await checkoutPage.deliveryAddressContinueBtn.click();
+        await page.waitForTimeout(500);
+        await checkoutPage.shippingMethodContinueButton.click();
+        await page.waitForTimeout(500);
+        await checkoutPage.termsCheckbox.check();
+        await checkoutPage.paymentMethodContinueButton.click();
+        await page.waitForTimeout(500);
+        await checkoutPage.confirmOrderButton.click();
+        // verify success page and click continue
+        await expect(checkoutPage.successHeading).toBeVisible();
+        await checkoutPage.successContinueButton.click();
+        // verify redirect to home
+        await expect(page).toHaveURL(/.*common\/home/);
+    });
+
 })
