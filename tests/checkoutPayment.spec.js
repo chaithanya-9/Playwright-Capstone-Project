@@ -59,13 +59,10 @@ test.describe('Checkout and Payment Service', () => {
         await page.waitForTimeout(500);
         await checkoutPage.billingAddressContinueBtn.click();
         await page.waitForTimeout(500);
-        // await expect(checkoutPage.deliveryAddressContinueBtn).toBeVisible();
         await checkoutPage.deliveryAddressContinueBtn.click();
         await page.waitForTimeout(500);
-        // await expect(checkoutPage.shippingMethodContinueButton).toBeVisible();
         await checkoutPage.shippingMethodContinueButton.click();
         await page.waitForTimeout(500);
-        // await expect(checkoutPage.termsCheckbox).toBeVisible();
         await checkoutPage.termsCheckbox.check();
         // to let jQuery register the checkbox before clicking continue
         await page.waitForTimeout(500);
