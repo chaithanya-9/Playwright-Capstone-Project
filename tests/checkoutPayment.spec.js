@@ -73,4 +73,27 @@ test.describe('Checkout and Payment Service', () => {
         await expect(checkoutPage.successHeading).toBeVisible();
         await expect(checkoutPage.successHeading).toHaveText('Your order has been placed!');
     });
+    // test 03
+    test('Test-03: Verify mandatory fields in the Billing Details step', async ({ page }) => {
+        const checkoutPage = new CheckoutPage(page);
+        await page.goto('https://naveenautomationlabs.com/opencart/index.php?route=product/product&product_id=47');
+        await page.locator('#button-cart').click();
+        await expect(page.locator('.alert-success')).toBeVisible();
+        await checkoutPage.navigateToCheckout();
+        await checkoutPage.guestCheckoutRadioButton.check();
+        await page.waitForTimeout(500);
+        await checkoutPage.accountContinueButton.click();
+        // attempt to submit a blank form
+        await expect(checkoutPage.firstNameInput).toBeVisible();
+        await checkoutPage.guestContinueButton.click();
+        // verify mandatory field warnings appear
+        await expect(checkoutPage.inputFieldWarning.first()).toBeVisible();
+        // assert specific text warnings to ensure the right fields failed
+        await expect(page.locator('text=First Name must be between 1 and 32 characters!')).toBeVisible();
+        await expect(page.locator('text=Last Name must be between 1 and 32 characters!')).toBeVisible();
+        await expect(page.locator('text=E-Mail address does not appear to be valid!')).toBeVisible();
+        await expect(page.locator('text=Telephone must be between 3 and 32 characters!')).toBeVisible();
+        await expect(page.locator('text=Address 1 must be between 3 and 128 characters!')).toBeVisible();
+        await expect(page.locator('text=City must be between 2 and 128 characters!')).toBeVisible();
+    });
 })
