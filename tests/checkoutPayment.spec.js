@@ -127,4 +127,30 @@ test.describe('Checkout and Payment Service', () => {
         await expect(page.locator('text=Address 1 must be between 3 and 128 characters!')).toBeVisible();
         await expect(page.locator('text=City must be between 2 and 128 characters!')).toBeVisible();
     });
+
+    // test 05
+    test('Test-05: Select delivery method flat shipping rate and proceed', async ({ page }) => {
+        const checkoutPage = new CheckoutPage(page);
+        const loginPage = new LoginPage(page);
+        await checkoutPage.navigate();
+        await checkoutPage.navigateToLogin();
+        await loginPage.login('demotest@gmail.com', 'demotest');
+        await page.goto('https://naveenautomationlabs.com/opencart/index.php?route=product/product&product_id=47');
+        await page.locator('#button-cart').click();
+        await expect(page.locator('.alert-success')).toBeVisible();
+        await checkoutPage.navigateToCheckout();
+        await page.waitForTimeout(500);
+        await checkoutPage.billingAddressContinueBtn.click();
+        await page.waitForTimeout(500);
+        await checkoutPage.deliveryAddressContinueBtn.click();
+        // delivery method, select flat shipping and proceed
+        await expect(checkoutPage.shippingMethodContinueButton).toBeVisible();
+        await checkoutPage.flatShippingRateRadio.check();
+        await expect(checkoutPage.flatShippingRateRadio).toBeChecked();
+        await page.waitForTimeout(500);
+        await checkoutPage.shippingMethodContinueButton.click();
+        // verify payment method accordion opens successfully
+        await expect(checkoutPage.paymentMethodContinueButton).toBeVisible();
+    });
+
 })
