@@ -17,6 +17,9 @@ class CheckoutPage extends BasePage {
         this.postCodeInput = page.getByPlaceholder('Post Code');
         this.countryDropdown = page.getByLabel('Country');
         this.regionDropdown = page.getByLabel('Region / State');
+        // logged-in user specific locators
+        this.billingAddressContinueBtn = page.locator('#button-payment-address');
+        this.deliveryAddressContinueBtn = page.locator('#button-shipping-address');
         // guest accordions
         this.guestContinueButton = page.locator('#button-guest');
         // delivery locators
@@ -32,12 +35,23 @@ class CheckoutPage extends BasePage {
     async navigateToCheckout() {
         await this.page.goto('https://naveenautomationlabs.com/opencart/index.php?route=checkout/checkout');
     }
-    // fill all the details
+    // fill all the guest details
     async fillGuestDetails(firstName, lastName, email, telephone, address, city, postCode, countryValue, regionValue) {
         await this.firstNameInput.fill(firstName);
         await this.lastNameInput.fill(lastName);
         await this.emailInput.fill(email);
         await this.telephoneInput.fill(telephone);
+        await this.address1Input.fill(address);
+        await this.cityInput.fill(city);
+        await this.postCodeInput.fill(postCode);
+        // Select country and region 
+        await this.countryDropdown.selectOption(countryValue);
+        await this.regionDropdown.selectOption(regionValue);
+    }
+    // fill all the logged in user details
+    async fillUserDetails(firstName, lastName, address, city, postCode, countryValue, regionValue) {
+        await this.firstNameInput.fill(firstName);
+        await this.lastNameInput.fill(lastName);
         await this.address1Input.fill(address);
         await this.cityInput.fill(city);
         await this.postCodeInput.fill(postCode);
