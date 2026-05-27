@@ -6,11 +6,11 @@ class CheckoutPage extends BasePage {
         // checkout locators
         this.guestCheckoutRadioButton = page.getByRole('radio', { name: 'Guest Checkout' });
         this.registerCheckoutRadioButton = page.getByRole('radio', { name: 'Register Account' });
-        this.accountContinueButton = page.locator('#collapse-checkout-option').getByRole('button', { name: 'Continue' });
+        this.accountContinueButton = page.locator('#button-account');
         // billing/guest locators
         this.firstNameInput = page.getByPlaceholder('First Name');
         this.lastNameInput = page.getByPlaceholder('Last Name');
-        this.emailInput = page.getByPlaceholder('E-Mail');
+        this.emailInput = page.getByRole('textbox', { name: '* E-Mail' });
         this.telephoneInput = page.getByPlaceholder('Telephone');
         this.address1Input = page.getByPlaceholder('Address 1');
         this.cityInput = page.getByPlaceholder('City');
@@ -18,13 +18,13 @@ class CheckoutPage extends BasePage {
         this.countryDropdown = page.getByLabel('Country');
         this.regionDropdown = page.getByLabel('Region / State');
         // guest accordions
-        this.guestContinueButton = page.locator('#collapse-guest').getByRole('button', { name: 'Continue' });
+        this.guestContinueButton = page.locator('#button-guest');
         // delivery locators
-        this.shippingMethodContinueButton = page.locator('#collapse-shipping-method').getByRole('button', { name: 'Continue' });
+        this.shippingMethodContinueButton = page.locator('#button-shipping-method');
         // payment locatos
         this.termsCheckbox = page.getByRole('checkbox');
-        this.paymentMethodContinueButton = page.locator('#collapse-payment-method').getByRole('button', { name: 'Continue' });
-        this.confirmOrderButton = page.getByRole('button', { name: 'Confirm Order' });
+        this.paymentMethodContinueButton = page.locator('#button-payment-method');
+        this.confirmOrderButton = page.locator('#button-confirm');
         this.successHeading = page.getByRole('heading', { name: 'Your order has been placed!' });
     }
     // action methods
