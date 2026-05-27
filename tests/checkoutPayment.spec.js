@@ -153,4 +153,42 @@ test.describe('Checkout and Payment Service', () => {
         await expect(checkoutPage.paymentMethodContinueButton).toBeVisible();
     });
 
+    // test 06
+    test('Test-06: Add comments to the order during the delivery method step', async ({ page }) => {
+        const checkoutPage = new CheckoutPage(page);
+        const loginPage = new LoginPage(page);
+        // navigate to login and authenticate
+        await checkoutPage.navigate();
+        await checkoutPage.navigateToLogin();
+        await loginPage.login('demotest@gmail.com', 'demotest');
+        // clear the cart items
+        await page.locator('#cart > button').click();
+        const itemsInCart = await page.getByTitle('Remove').count();
+        if (itemsInCart > 0) {
+            for (let i = 0; i < itemsInCart; i++) {
+                await page.getByTitle('Remove').click();
+                await page.waitForTimeout(500);
+            }
+        } else {
+            await page.locator('#cart > button').click();
+        }
+        // add this product to cart
+        await page.goto('https://naveenautomationlabs.com/opencart/index.php?route=product/product&product_id=47');
+        await page.locator('#button-cart').click();
+        await expect(page.locator('.alert-success')).toBeVisible();
+        // navigate directly to checkout page
+        await checkoutPage.navigateToCheckout();
+        await page.waitForTimeout(500);
+        await checkoutPage.billingAddressContinueBtn.click();
+        await page.waitForTimeout(500);
+        await checkoutPage.deliveryAddressContinueBtn.click();
+        // delivery method, add comment and proceed
+        await expect(checkoutPage.shippingMethodContinueButton).toBeVisible();
+        await checkoutPage.deliveryMethodCommentBox.fill('Please leave the package at the front door');
+        await page.waitForTimeout(500);
+        await checkoutPage.shippingMethodContinueButton.click();
+        // verify payment method accordion opens successfully
+        await expect(checkoutPage.paymentMethodContinueButton).toBeVisible();
+    });
+
 })
