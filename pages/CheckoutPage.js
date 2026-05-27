@@ -25,6 +25,7 @@ class CheckoutPage extends BasePage {
         // delivery locators
         this.shippingMethodContinueButton = page.locator('#button-shipping-method');
         this.newDeliveryAddressRadioButton = page.locator('input[name="shipping_address"][value="new"]');
+        this.flatShippingRateRadio = page.locator('input[value="flat.flat"]');
         // payment locatos
         this.termsCheckbox = page.getByRole('checkbox');
         this.paymentMethodContinueButton = page.locator('#button-payment-method');
