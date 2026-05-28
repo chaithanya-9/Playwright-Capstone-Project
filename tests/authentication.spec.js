@@ -31,9 +31,8 @@ test.describe('Authentication Service Tests', () => {
         const uniqueMailId = `fakeEmail${Date.now()}@gmail.com`;
         // login with invalid credentials
         await loginPage.login(uniqueMailId, 'fakeLogin');
-        // verify error message
-        const errorMessage = await loginPage.getErrorMessage();
-        await expect(errorMessage).toContain('Warning: No match for E-Mail Address and/or Password.')
+        // verify error message using Web-First assertion with rate limit fallback
+        await expect(loginPage.errorMessage).toContainText(/ Warning: No match for E-Mail Address and\/or Password.| Warning: Your account has exceeded allowed number of login attempts. Please try again in 1 hour./);
     });
 
     // test 03
@@ -44,7 +43,7 @@ test.describe('Authentication Service Tests', () => {
         await loginPage.navigateToLogin();
         // login with invalid email format (missing .com in email) but valid credentials
         await loginPage.login('demotest@gmail', 'demotest');
-        // verify error message 
+        // verify error message using Web-First assertion with rate limit fallback
         // used .toContainText() instead of .toContain() because .toContainText() automatically waits for the text to render first and its  more efficient
         // and we can direclty pass the locator no need to fetch the error message using getErrorMessage() method
         await expect(loginPage.errorMessage).toContainText(/ Warning: No match for E-Mail Address and\/or Password.| Warning: Your account has exceeded allowed number of login attempts. Please try again in 1 hour./);
