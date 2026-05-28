@@ -14,7 +14,7 @@ test.describe('Product Management Service Tests', () => {
         // check if page redirected to search results page
         await expect(page).toHaveURL(/.*route=product\/search/);
         const resultCount = await productPage.productCards.count();
-        await expect(resultCount).toBeGreaterThan(0);
+        expect(resultCount).toBeGreaterThan(0);
         // verify first product card is visible
         await expect(productPage.productCards.first()).toBeVisible();
         // check only for first product card because we already checked resultCount is greater than 0 and checked for first card to be visible so we save time not checking for rest of the cards 
@@ -32,7 +32,7 @@ test.describe('Product Management Service Tests', () => {
         // verify warning message
         await expect(productPage.emptySearchMessage).toBeVisible();
         // check for no product cards rendered
-        await expect(await productPage.productCards.count()).toEqual(0);
+        await expect(await productPage.productCards).toHaveCount(0);
     });
 
     // test 03 
