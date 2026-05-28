@@ -460,4 +460,50 @@ test.describe('Checkout and Payment Service', () => {
         expect(isRedirectedToCartOrHome).toBeTruthy();
     });
 
+    // test 14
+    test('Test-14: Complete checkout with different billing and shipping address', async ({ page }) => {
+        const checkoutPage = new CheckoutPage(page);
+        const loginPage = new LoginPage(page);
+        await checkoutPage.navigate();
+        await checkoutPage.navigateToLogin();
+        await loginPage.login('demotest@gmail.com', 'demotest');
+        // clear cart
+        await page.locator('#cart > button').click();
+        const itemsInCart = await page.getByTitle('Remove').count();
+        if (itemsInCart > 0) {
+            for (let i = 0; i < itemsInCart; i++) {
+                await page.getByTitle('Remove').first().click();
+                await page.waitForTimeout(500);
+            }
+        } else {
+            await page.locator('#cart > button').click();
+        }
+        await page.goto('https://naveenautomationlabs.com/opencart/index.php?route=product/product&product_id=47');
+        await page.locator('#button-cart').click();
+        await checkoutPage.navigateToCheckout();
+        await page.waitForTimeout(500);
+        await checkoutPage.billingAddressContinueBtn.click();
+        // select new address
+        await page.waitForTimeout(500);
+        await checkoutPage.newDeliveryAddressRadioButton.nth(1).check();
+        // fill new address
+        await checkoutPage.newAddressFirstName.fill('Jane');
+        await checkoutPage.newAddressLastName.fill('Wick');
+        await checkoutPage.newAddress1.fill('456 Oak St');
+        await checkoutPage.newAddressCity.fill('Los Angeles');
+        await checkoutPage.newAddressPostcode.fill('90001');
+        await checkoutPage.newAddressCountry.selectOption({ label: 'United States' });
+        await checkoutPage.newAddressZone.selectOption({ label: 'California' });
+        await checkoutPage.deliveryAddressContinueBtn.click();
+        await page.waitForTimeout(500);
+        await checkoutPage.shippingMethodContinueButton.click();
+        await page.waitForTimeout(500);
+        await checkoutPage.termsCheckbox.check();
+        await checkoutPage.paymentMethodContinueButton.click();
+        await page.waitForTimeout(500);
+        await checkoutPage.confirmOrderButton.click();
+        // verify success page 
+        await expect(checkoutPage.successHeading).toBeVisible();
+    });
+
 })
