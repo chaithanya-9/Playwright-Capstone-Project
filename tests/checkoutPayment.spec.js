@@ -506,4 +506,57 @@ test.describe('Checkout and Payment Service', () => {
         await expect(checkoutPage.successHeading).toBeVisible();
     });
 
+    // test 15
+    test('Test-15: Validate total price at checkout matches the final confirmation page', async ({ page }) => {
+        const checkoutPage = new CheckoutPage(page);
+        const loginPage = new LoginPage(page);
+        // navigate to login and authenticate
+        await checkoutPage.navigate();
+        await checkoutPage.navigateToLogin();
+        await loginPage.login('demotest@gmail.com', 'demotest');
+        // clear cart
+        await page.locator('#cart > button').click();
+        const itemsInCart = await page.getByTitle('Remove').count();
+        if (itemsInCart > 0) {
+            for (let i = 0; i < itemsInCart; i++) {
+                await page.getByTitle('Remove').first().click();
+                await page.waitForTimeout(500);
+            }
+        } else {
+            await page.locator('#cart > button').click();
+        }
+        // go to product and capture its base price
+        await page.goto('https://naveenautomationlabs.com/opencart/index.php?route=product/product&product_id=47');
+        const productPriceText = await page.locator('h2:has-text("$")').first().innerText();
+        // add to cart
+        await page.locator('#button-cart').click();
+        await expect(page.locator('.alert-success')).toBeVisible();
+        // navigate directly to checkout page
+        await checkoutPage.navigateToCheckout();
+        // complete steps to reach Confirm Order
+        await page.waitForTimeout(500);
+        await checkoutPage.billingAddressContinueBtn.click();
+        await page.waitForTimeout(500);
+        await checkoutPage.deliveryAddressContinueBtn.click();
+        await page.waitForTimeout(500);
+        await checkoutPage.shippingMethodContinueButton.click();
+        await page.waitForTimeout(500);
+        await checkoutPage.termsCheckbox.check();
+        await checkoutPage.paymentMethodContinueButton.click();
+        await page.waitForTimeout(500);
+        // verify the confirm order step is visible
+        await expect(checkoutPage.confirmOrderButton).toBeVisible();
+        // extract the summary table text
+        const summaryText = await checkoutPage.confirmOrderTable.innerText();
+        // verify the base product price we captured earlier is in the final summary
+        expect(summaryText).toContain(productPriceText);
+        // verify the Final Total is populated properly 
+        await expect(checkoutPage.finalTotalText).toBeVisible();
+        const finalPrice = await checkoutPage.finalTotalText.innerText();
+        expect(finalPrice).toContain('$');
+        // place order to conclude cleanly
+        await checkoutPage.confirmOrderButton.click();
+        await expect(checkoutPage.successHeading).toBeVisible();
+    });
+
 })
