@@ -52,6 +52,7 @@ class CheckoutPage extends BasePage {
         // price verification locators
         this.confirmOrderTable = page.locator('#collapse-checkout-confirm');
         this.finalTotalText = page.locator('#collapse-checkout-confirm tfoot tr:last-child td:nth-child(2)');
+        this.billingAddressAccordion = page.locator('#collapse-payment-address');
     }
     // action methods
     // navigate directly to Checkout Page
@@ -73,6 +74,7 @@ class CheckoutPage extends BasePage {
     }
     // fill all the logged in user details
     async fillUserDetails(firstName, lastName, address, city, postCode, countryValue, regionValue) {
+        await this.firstNameInput.waitFor({ state: 'visible' });
         await this.firstNameInput.fill(firstName);
         await this.lastNameInput.fill(lastName);
         await this.address1Input.fill(address);
