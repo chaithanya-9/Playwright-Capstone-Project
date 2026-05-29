@@ -8,7 +8,7 @@ class CheckoutPage extends BasePage {
         this.registerCheckoutRadioButton = page.getByRole('radio', { name: 'Register Account' });
         this.accountContinueButton = page.locator('#button-account');
         // billing/guest locators
-        this.firstNameInput = page.getByPlaceholder('First Name');
+        this.firstNameInput = page.locator('#input-payment-firstname');
         this.lastNameInput = page.getByPlaceholder('Last Name');
         this.emailInput = page.getByRole('textbox', { name: '* E-Mail' });
         this.telephoneInput = page.getByPlaceholder('Telephone');
@@ -21,14 +21,12 @@ class CheckoutPage extends BasePage {
         this.billingAddressContinueBtn = page.locator('#button-payment-address');
         this.deliveryAddressContinueBtn = page.locator('#button-shipping-address');
         // guest accordions
-        this.guestContinueButton = page.locator('#button-guest');
+        this.guestContinueButton = page.locator('#button-guest')
         // delivery locators
         this.shippingMethodContinueButton = page.locator('#button-shipping-method');
         this.newDeliveryAddressRadioButton = page.locator('input[name="shipping_address"][value="new"]');
         this.flatShippingRateRadio = page.locator('input[value="flat.flat"]');
         this.deliveryMethodCommentBox = page.locator('textarea[name="comment"]');
-        // address selection locators
-        this.newDeliveryAddressRadioButton = page.locator('input[value="new"]');
         // address form locators for new address
         this.newAddressFirstName = page.locator('#input-shipping-firstname');
         this.newAddressLastName = page.locator('#input-shipping-lastname');
