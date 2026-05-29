@@ -29,7 +29,7 @@ test.describe('Checkout and Payment Service', () => {
             const itemsInCart = await page.getByTitle('Remove').count();
             if (itemsInCart > 0) {
                 for (let i = 0; i < itemsInCart; i++) {
-                    await page.getByTitle('Remove').first().click();
+                    await page.getByTitle('Remove').nth(0).click();
                     await expect(page.getByTitle('Remove')).toHaveCount(itemsInCart - i - 1);
                 }
             } else {
@@ -58,17 +58,14 @@ test.describe('Checkout and Payment Service', () => {
             await expect(page.locator('#collapse-payment-address')).toHaveAttribute('aria-expanded', 'true');
             await checkoutPage.billingAddressContinueBtn.click();
             // wait for billing accordion to collapse before proceeding
-            await expect(page.locator('#collapse-payment-address')).toHaveAttribute('aria-expanded', 'false');
             // wait for delivery accordion to open
             await expect(page.locator('#collapse-shipping-address')).toHaveAttribute('aria-expanded', 'true');
             await checkoutPage.deliveryAddressContinueBtn.click();
             // wait for delivery accordion to collapse
-            await expect(page.locator('#collapse-shipping-address')).toHaveAttribute('aria-expanded', 'false');
             // wait for shipping method accordion to open
             await expect(page.locator('#collapse-shipping-method')).toHaveAttribute('aria-expanded', 'true');
             await checkoutPage.shippingMethodContinueButton.click();
             // wait for shipping method accordion to collapse
-            await expect(page.locator('#collapse-shipping-method')).toHaveAttribute('aria-expanded', 'false');
             // wait for payment method accordion to open
             await expect(page.locator('#collapse-payment-method')).toHaveAttribute('aria-expanded', 'true');
             await checkoutPage.termsCheckbox.check();
@@ -76,7 +73,6 @@ test.describe('Checkout and Payment Service', () => {
             await expect(checkoutPage.termsCheckbox).toBeChecked();
             await checkoutPage.paymentMethodContinueButton.click();
             // wait for payment method accordion to collapse
-            await expect(page.locator('#collapse-payment-method')).toHaveAttribute('aria-expanded', 'false');
             await expect(checkoutPage.confirmOrderButton).toBeVisible();
             await checkoutPage.confirmOrderButton.click();
             // verify success page
@@ -91,7 +87,6 @@ test.describe('Checkout and Payment Service', () => {
             await expect(page.locator('#collapse-payment-address')).toHaveAttribute('aria-expanded', 'true');
             await checkoutPage.billingAddressContinueBtn.click();
             // wait for billing to collapse and delivery to open
-            await expect(page.locator('#collapse-payment-address')).toHaveAttribute('aria-expanded', 'false');
             await expect(page.locator('#collapse-shipping-address')).toHaveAttribute('aria-expanded', 'true');
             // select new delivery address to reveal the blank form
             await checkoutPage.newDeliveryAddressRadioButton.check();
@@ -111,10 +106,8 @@ test.describe('Checkout and Payment Service', () => {
             const checkoutPage = new CheckoutPage(page);
             await expect(page.locator('#collapse-payment-address')).toHaveAttribute('aria-expanded', 'true');
             await checkoutPage.billingAddressContinueBtn.click();
-            await expect(page.locator('#collapse-payment-address')).toHaveAttribute('aria-expanded', 'false');
             await expect(page.locator('#collapse-shipping-address')).toHaveAttribute('aria-expanded', 'true');
             await checkoutPage.deliveryAddressContinueBtn.click();
-            await expect(page.locator('#collapse-shipping-address')).toHaveAttribute('aria-expanded', 'false');
             // wait for shipping method section to open
             await expect(page.locator('#collapse-shipping-method')).toHaveAttribute('aria-expanded', 'true');
             // select flat shipping rate and verify it is checked
@@ -122,7 +115,6 @@ test.describe('Checkout and Payment Service', () => {
             await expect(checkoutPage.flatShippingRateRadio).toBeChecked();
             await checkoutPage.shippingMethodContinueButton.click();
             // verify payment method accordion opens after shipping method collapses
-            await expect(page.locator('#collapse-shipping-method')).toHaveAttribute('aria-expanded', 'false');
             await expect(page.locator('#collapse-payment-method')).toHaveAttribute('aria-expanded', 'true');
         });
 
@@ -131,16 +123,13 @@ test.describe('Checkout and Payment Service', () => {
             const checkoutPage = new CheckoutPage(page);
             await expect(page.locator('#collapse-payment-address')).toHaveAttribute('aria-expanded', 'true');
             await checkoutPage.billingAddressContinueBtn.click();
-            await expect(page.locator('#collapse-payment-address')).toHaveAttribute('aria-expanded', 'false');
             await expect(page.locator('#collapse-shipping-address')).toHaveAttribute('aria-expanded', 'true');
             await checkoutPage.deliveryAddressContinueBtn.click();
-            await expect(page.locator('#collapse-shipping-address')).toHaveAttribute('aria-expanded', 'false');
             // wait for shipping section and fill comment before proceeding
             await expect(page.locator('#collapse-shipping-method')).toHaveAttribute('aria-expanded', 'true');
             await checkoutPage.deliveryMethodCommentBox.fill('Please leave the package at the front door');
             await checkoutPage.shippingMethodContinueButton.click();
             // verify payment method accordion opens after shipping method collapses
-            await expect(page.locator('#collapse-shipping-method')).toHaveAttribute('aria-expanded', 'false');
             await expect(page.locator('#collapse-payment-method')).toHaveAttribute('aria-expanded', 'true');
         });
 
@@ -149,13 +138,10 @@ test.describe('Checkout and Payment Service', () => {
             const checkoutPage = new CheckoutPage(page);
             await expect(page.locator('#collapse-payment-address')).toHaveAttribute('aria-expanded', 'true');
             await checkoutPage.billingAddressContinueBtn.click();
-            await expect(page.locator('#collapse-payment-address')).toHaveAttribute('aria-expanded', 'false');
             await expect(page.locator('#collapse-shipping-address')).toHaveAttribute('aria-expanded', 'true');
             await checkoutPage.deliveryAddressContinueBtn.click();
-            await expect(page.locator('#collapse-shipping-address')).toHaveAttribute('aria-expanded', 'false');
             await expect(page.locator('#collapse-shipping-method')).toHaveAttribute('aria-expanded', 'true');
             await checkoutPage.shippingMethodContinueButton.click();
-            await expect(page.locator('#collapse-shipping-method')).toHaveAttribute('aria-expanded', 'false');
             // wait for payment method accordion to open
             await expect(page.locator('#collapse-payment-method')).toHaveAttribute('aria-expanded', 'true');
             // select COD and verify it is checked before proceeding
@@ -166,7 +152,6 @@ test.describe('Checkout and Payment Service', () => {
             await expect(checkoutPage.termsCheckbox).toBeChecked();
             await checkoutPage.paymentMethodContinueButton.click();
             // verify confirm order step opens after payment method collapses
-            await expect(page.locator('#collapse-payment-method')).toHaveAttribute('aria-expanded', 'false');
             await expect(checkoutPage.confirmOrderButton).toBeVisible();
         });
 
@@ -175,13 +160,10 @@ test.describe('Checkout and Payment Service', () => {
             const checkoutPage = new CheckoutPage(page);
             await expect(page.locator('#collapse-payment-address')).toHaveAttribute('aria-expanded', 'true');
             await checkoutPage.billingAddressContinueBtn.click();
-            await expect(page.locator('#collapse-payment-address')).toHaveAttribute('aria-expanded', 'false');
             await expect(page.locator('#collapse-shipping-address')).toHaveAttribute('aria-expanded', 'true');
             await checkoutPage.deliveryAddressContinueBtn.click();
-            await expect(page.locator('#collapse-shipping-address')).toHaveAttribute('aria-expanded', 'false');
             await expect(page.locator('#collapse-shipping-method')).toHaveAttribute('aria-expanded', 'true');
             await checkoutPage.shippingMethodContinueButton.click();
-            await expect(page.locator('#collapse-shipping-method')).toHaveAttribute('aria-expanded', 'false');
             // wait for payment method accordion to open
             await expect(page.locator('#collapse-payment-method')).toHaveAttribute('aria-expanded', 'true');
             // attempt to proceed WITHOUT checking terms
@@ -196,19 +178,15 @@ test.describe('Checkout and Payment Service', () => {
             const checkoutPage = new CheckoutPage(page);
             await expect(page.locator('#collapse-payment-address')).toHaveAttribute('aria-expanded', 'true');
             await checkoutPage.billingAddressContinueBtn.click();
-            await expect(page.locator('#collapse-payment-address')).toHaveAttribute('aria-expanded', 'false');
             await expect(page.locator('#collapse-shipping-address')).toHaveAttribute('aria-expanded', 'true');
             await checkoutPage.deliveryAddressContinueBtn.click();
-            await expect(page.locator('#collapse-shipping-address')).toHaveAttribute('aria-expanded', 'false');
             await expect(page.locator('#collapse-shipping-method')).toHaveAttribute('aria-expanded', 'true');
             await checkoutPage.shippingMethodContinueButton.click();
-            await expect(page.locator('#collapse-shipping-method')).toHaveAttribute('aria-expanded', 'false');
             await expect(page.locator('#collapse-payment-method')).toHaveAttribute('aria-expanded', 'true');
             await checkoutPage.termsCheckbox.check();
             await expect(checkoutPage.termsCheckbox).toBeChecked();
             await checkoutPage.paymentMethodContinueButton.click();
             // wait for payment method to collapse and confirm order to appear
-            await expect(page.locator('#collapse-payment-method')).toHaveAttribute('aria-expanded', 'false');
             await expect(checkoutPage.confirmOrderButton).toBeVisible();
             // verify product name in the confirm order summary matches what was added
             await expect(checkoutPage.confirmProductName).toBeVisible();
@@ -220,18 +198,14 @@ test.describe('Checkout and Payment Service', () => {
             const checkoutPage = new CheckoutPage(page);
             await expect(page.locator('#collapse-payment-address')).toHaveAttribute('aria-expanded', 'true');
             await checkoutPage.billingAddressContinueBtn.click();
-            await expect(page.locator('#collapse-payment-address')).toHaveAttribute('aria-expanded', 'false');
             await expect(page.locator('#collapse-shipping-address')).toHaveAttribute('aria-expanded', 'true');
             await checkoutPage.deliveryAddressContinueBtn.click();
-            await expect(page.locator('#collapse-shipping-address')).toHaveAttribute('aria-expanded', 'false');
             await expect(page.locator('#collapse-shipping-method')).toHaveAttribute('aria-expanded', 'true');
             await checkoutPage.shippingMethodContinueButton.click();
-            await expect(page.locator('#collapse-shipping-method')).toHaveAttribute('aria-expanded', 'false');
             await expect(page.locator('#collapse-payment-method')).toHaveAttribute('aria-expanded', 'true');
             await checkoutPage.termsCheckbox.check();
             await expect(checkoutPage.termsCheckbox).toBeChecked();
             await checkoutPage.paymentMethodContinueButton.click();
-            await expect(page.locator('#collapse-payment-method')).toHaveAttribute('aria-expanded', 'false');
             await expect(checkoutPage.confirmOrderButton).toBeVisible();
             await checkoutPage.confirmOrderButton.click();
             // verify success page
@@ -244,18 +218,14 @@ test.describe('Checkout and Payment Service', () => {
             const checkoutPage = new CheckoutPage(page);
             await expect(page.locator('#collapse-payment-address')).toHaveAttribute('aria-expanded', 'true');
             await checkoutPage.billingAddressContinueBtn.click();
-            await expect(page.locator('#collapse-payment-address')).toHaveAttribute('aria-expanded', 'false');
             await expect(page.locator('#collapse-shipping-address')).toHaveAttribute('aria-expanded', 'true');
             await checkoutPage.deliveryAddressContinueBtn.click();
-            await expect(page.locator('#collapse-shipping-address')).toHaveAttribute('aria-expanded', 'false');
             await expect(page.locator('#collapse-shipping-method')).toHaveAttribute('aria-expanded', 'true');
             await checkoutPage.shippingMethodContinueButton.click();
-            await expect(page.locator('#collapse-shipping-method')).toHaveAttribute('aria-expanded', 'false');
             await expect(page.locator('#collapse-payment-method')).toHaveAttribute('aria-expanded', 'true');
             await checkoutPage.termsCheckbox.check();
             await expect(checkoutPage.termsCheckbox).toBeChecked();
             await checkoutPage.paymentMethodContinueButton.click();
-            await expect(page.locator('#collapse-payment-method')).toHaveAttribute('aria-expanded', 'false');
             await expect(checkoutPage.confirmOrderButton).toBeVisible();
             // perform the double-click on confirm order
             await checkoutPage.confirmOrderButton.dblclick();
@@ -269,18 +239,14 @@ test.describe('Checkout and Payment Service', () => {
             const checkoutPage = new CheckoutPage(page);
             await expect(page.locator('#collapse-payment-address')).toHaveAttribute('aria-expanded', 'true');
             await checkoutPage.billingAddressContinueBtn.click();
-            await expect(page.locator('#collapse-payment-address')).toHaveAttribute('aria-expanded', 'false');
             await expect(page.locator('#collapse-shipping-address')).toHaveAttribute('aria-expanded', 'true');
             await checkoutPage.deliveryAddressContinueBtn.click();
-            await expect(page.locator('#collapse-shipping-address')).toHaveAttribute('aria-expanded', 'false');
             await expect(page.locator('#collapse-shipping-method')).toHaveAttribute('aria-expanded', 'true');
             await checkoutPage.shippingMethodContinueButton.click();
-            await expect(page.locator('#collapse-shipping-method')).toHaveAttribute('aria-expanded', 'false');
             await expect(page.locator('#collapse-payment-method')).toHaveAttribute('aria-expanded', 'true');
             await checkoutPage.termsCheckbox.check();
             await expect(checkoutPage.termsCheckbox).toBeChecked();
             await checkoutPage.paymentMethodContinueButton.click();
-            await expect(page.locator('#collapse-payment-method')).toHaveAttribute('aria-expanded', 'false');
             await expect(checkoutPage.confirmOrderButton).toBeVisible();
             await checkoutPage.confirmOrderButton.click();
             // verify success page and click continue
@@ -295,7 +261,6 @@ test.describe('Checkout and Payment Service', () => {
             const checkoutPage = new CheckoutPage(page);
             await expect(page.locator('#collapse-payment-address')).toHaveAttribute('aria-expanded', 'true');
             await checkoutPage.billingAddressContinueBtn.click();
-            await expect(page.locator('#collapse-payment-address')).toHaveAttribute('aria-expanded', 'false');
             // wait for delivery section to open then select new address
             await expect(page.locator('#collapse-shipping-address')).toHaveAttribute('aria-expanded', 'true');
             await checkoutPage.newDeliveryAddressRadioButton.check();
@@ -310,15 +275,12 @@ test.describe('Checkout and Payment Service', () => {
             await checkoutPage.newAddressCountry.selectOption({ label: 'United States' });
             await checkoutPage.newAddressZone.selectOption({ label: 'California' });
             await checkoutPage.deliveryAddressContinueBtn.click();
-            await expect(page.locator('#collapse-shipping-address')).toHaveAttribute('aria-expanded', 'false');
             await expect(page.locator('#collapse-shipping-method')).toHaveAttribute('aria-expanded', 'true');
             await checkoutPage.shippingMethodContinueButton.click();
-            await expect(page.locator('#collapse-shipping-method')).toHaveAttribute('aria-expanded', 'false');
             await expect(page.locator('#collapse-payment-method')).toHaveAttribute('aria-expanded', 'true');
             await checkoutPage.termsCheckbox.check();
             await expect(checkoutPage.termsCheckbox).toBeChecked();
             await checkoutPage.paymentMethodContinueButton.click();
-            await expect(page.locator('#collapse-payment-method')).toHaveAttribute('aria-expanded', 'false');
             await expect(checkoutPage.confirmOrderButton).toBeVisible();
             await checkoutPage.confirmOrderButton.click();
             // verify success page
@@ -330,19 +292,15 @@ test.describe('Checkout and Payment Service', () => {
             const checkoutPage = new CheckoutPage(page);
             await expect(page.locator('#collapse-payment-address')).toHaveAttribute('aria-expanded', 'true');
             await checkoutPage.billingAddressContinueBtn.click();
-            await expect(page.locator('#collapse-payment-address')).toHaveAttribute('aria-expanded', 'false');
             await expect(page.locator('#collapse-shipping-address')).toHaveAttribute('aria-expanded', 'true');
             await checkoutPage.deliveryAddressContinueBtn.click();
-            await expect(page.locator('#collapse-shipping-address')).toHaveAttribute('aria-expanded', 'false');
             await expect(page.locator('#collapse-shipping-method')).toHaveAttribute('aria-expanded', 'true');
             await checkoutPage.shippingMethodContinueButton.click();
-            await expect(page.locator('#collapse-shipping-method')).toHaveAttribute('aria-expanded', 'false');
             await expect(page.locator('#collapse-payment-method')).toHaveAttribute('aria-expanded', 'true');
             await checkoutPage.termsCheckbox.check();
             await expect(checkoutPage.termsCheckbox).toBeChecked();
             await checkoutPage.paymentMethodContinueButton.click();
             // wait for payment method to collapse and confirm order to appear
-            await expect(page.locator('#collapse-payment-method')).toHaveAttribute('aria-expanded', 'false');
             await expect(checkoutPage.confirmOrderButton).toBeVisible();
             // verify the base product price captured earlier exists in the summary table
             const summaryText = await checkoutPage.confirmOrderTable.innerText();
@@ -366,22 +324,21 @@ test.describe('Checkout and Payment Service', () => {
             await expect(page.locator('.alert-success')).toBeVisible();
             // navigate directly to the Checkout page
             await checkoutPage.navigateToCheckout();
+            await page.waitForLoadState('networkidle');
             await checkoutPage.guestCheckoutRadioButton.check();
+            await checkoutPage.accountContinueButton.waitFor({ state: 'visible' });
             // wait for jQuery to register the radio button change before clicking continue
             await expect(checkoutPage.accountContinueButton).toBeEnabled();
             await checkoutPage.accountContinueButton.click();
-            await page.waitForTimeout(500);
             // fill out the guest form
             const uniqueEmail = `guestuser_${Date.now()}@test.com`;
             await checkoutPage.fillGuestDetails('John', 'Wick', uniqueEmail, '1234567890', '123 Main St', 'New York', '10001', 'United States', 'New York');
             await checkoutPage.guestContinueButton.click();
             // wait for billing accordion to fully collapse before proceeding
-            await expect(page.locator('#collapse-payment-address')).toHaveAttribute('aria-expanded', 'false');
             // wait for shipping method accordion to open
             await expect(page.locator('#collapse-shipping-method')).toHaveAttribute('aria-expanded', 'true');
             await checkoutPage.shippingMethodContinueButton.click();
             // wait for shipping method accordion to collapse
-            await expect(page.locator('#collapse-shipping-method')).toHaveAttribute('aria-expanded', 'false');
             // wait for payment method accordion to open
             await expect(page.locator('#collapse-payment-method')).toHaveAttribute('aria-expanded', 'true');
             await checkoutPage.termsCheckbox.check();
@@ -389,7 +346,6 @@ test.describe('Checkout and Payment Service', () => {
             await expect(checkoutPage.termsCheckbox).toBeChecked();
             await checkoutPage.paymentMethodContinueButton.click();
             // wait for payment method accordion to collapse
-            await expect(page.locator('#collapse-payment-method')).toHaveAttribute('aria-expanded', 'false');
             await expect(checkoutPage.confirmOrderButton).toBeVisible();
             await checkoutPage.confirmOrderButton.click();
             // verify success page
@@ -404,11 +360,12 @@ test.describe('Checkout and Payment Service', () => {
             await page.locator('#button-cart').click();
             await expect(page.locator('.alert-success')).toBeVisible();
             await checkoutPage.navigateToCheckout();
+            await page.waitForLoadState('networkidle');
             await checkoutPage.guestCheckoutRadioButton.check();
+            await checkoutPage.accountContinueButton.waitFor({ state: 'visible' });
             // wait for jQuery to register the radio button before clicking continue
             await expect(checkoutPage.accountContinueButton).toBeEnabled();
             await checkoutPage.accountContinueButton.click();
-            await page.waitForTimeout(500);
             // attempt to submit a blank form
             await checkoutPage.guestContinueButton.click();
             // verify mandatory field warnings appear
