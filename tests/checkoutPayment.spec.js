@@ -89,8 +89,10 @@ test.describe('Checkout and Payment Service', () => {
             // wait for billing to collapse and delivery to open
             await expect(page.locator('#collapse-shipping-address')).toHaveAttribute('aria-expanded', 'true');
             // select new delivery address to reveal the blank form
+            await checkoutPage.newDeliveryAddressRadioButton.waitFor({ state: 'visible' });
             await checkoutPage.newDeliveryAddressRadioButton.check();
             // attempt to submit the blank delivery form
+            await checkoutPage.deliveryAddressContinueBtn.waitFor({ state: 'visible' });
             await checkoutPage.deliveryAddressContinueBtn.click();
             // verify mandatory field warnings appear for delivery form
             await expect(checkoutPage.inputFieldWarning.first()).toBeVisible();
