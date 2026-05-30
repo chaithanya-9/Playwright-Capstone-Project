@@ -128,4 +128,17 @@ test.describe('User Profile Service', () => {
         // verify the page heading is visible to confirm content loaded
         await expect(page.getByRole('heading', { name: 'Your Reward Points' })).toBeVisible();
     });
+
+    // test 10
+    test('Test-10: Verify navigation to the Returns page loads successfully', async ({ page }) => {
+        const userProfilePage = new UserProfilePage(page);
+        // navigate to the My Account dashboard
+        await userProfilePage.navigateToMyAccount();
+        // click the 'View your return requests' link from the sidebar
+        await userProfilePage.returnsLink.click();
+        // verify the system routes successfully to the Product Returns page
+        await expect(page).toHaveURL(/.*route=account\/return/);
+        // verify the page heading is visible to confirm content loaded
+        await expect(page.getByRole('heading', { name: 'Product Returns' })).toBeVisible();
+    });
 })
