@@ -1,5 +1,6 @@
 const { test, expect } = require('@playwright/test');
 const { UserProfilePage } = require('../pages/UserProfilePage');
+const { LoginPage } = require('../pages/LoginPage');
 
 test.describe('User Profile Service', () => {
     // inject the authenticated storage state before each test to ensure we're logged in
@@ -81,5 +82,24 @@ test.describe('User Profile Service', () => {
         await userProfilePage.orderHistoryLink.click();
         // verify the system routes successfully to the Order History page
         await expect(page).toHaveURL(/.*route=account\/order/);
+    });
+
+    // test 07
+    test('Test-07: Verify clicking View on a past order shows order details', async ({ page }) => {
+        const userProfilePage = new UserProfilePage(page);
+        await page.goto('https://naveenautomationlabs.com/opencart/index.php?route=account/order');
+        // check if any orders exist before trying to view one
+        const viewButtons = page.locator('a[data-original-title="View"]');
+        const orderCount = await viewButtons.count();
+        if (orderCount > 0) {
+            // click the first view button to open order details
+            await viewButtons.first().click();
+            // verify the system routed to the order info page
+            await expect(page).toHaveURL(/.*route=account\/order\/info/);
+            await expect(page.getByRole('heading', { name: 'Order Detail' })).toBeVisible();
+        } else {
+            // if no orders exist skip the view action and just verify the empty state renders
+            await expect(page.getByText('You have not made any previous orders!')).toBeVisible();
+        }
     });
 })
