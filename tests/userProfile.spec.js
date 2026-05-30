@@ -165,4 +165,18 @@ test.describe('User Profile Service', () => {
         // verify the success message appears
         await expect(userProfilePage.successMessage).toContainText('Success: Your newsletter subscription has been successfully updated!');
     });
+
+    // test 13
+    test('Test-13: Verify the user can successfully unsubscribe from the newsletter', async ({ page }) => {
+        const userProfilePage = new UserProfilePage(page);
+        // navigate to the Newsletter subscription page
+        await userProfilePage.navigateToNewsletter();
+        // unsubscribe from the newsletter
+        await userProfilePage.setNewsletterSubscription(false);
+        // verify the success message appears
+        await expect(userProfilePage.successMessage).toContainText('Success: Your newsletter subscription has been successfully updated!');
+        // verify the 'No' radio button is now checked
+        await userProfilePage.navigateToNewsletter();
+        await expect(userProfilePage.newsletterNoRadio).toBeChecked();
+    });
 })
