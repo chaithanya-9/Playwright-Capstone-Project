@@ -115,4 +115,17 @@ test.describe('User Profile Service', () => {
         // verify the page heading is visible to confirm content loaded
         await expect(page.getByRole('heading', { name: 'Account Downloads' })).toBeVisible();
     });
+
+    // test 09
+    test('Test-09: Verify navigation to the Reward Points page loads successfully', async ({ page }) => {
+        const userProfilePage = new UserProfilePage(page);
+        // navigate to the My Account dashboard
+        await userProfilePage.navigateToMyAccount();
+        // click the 'Your Reward Points' link from the sidebar
+        await userProfilePage.rewardPointsLink.click();
+        // verify the system routes successfully to the Reward Points page
+        await expect(page).toHaveURL(/.*route=account\/reward/);
+        // verify the page heading is visible to confirm content loaded
+        await expect(page.getByRole('heading', { name: 'Your Reward Points' })).toBeVisible();
+    });
 })
