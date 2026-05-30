@@ -57,4 +57,18 @@ test.describe('User Profile Service', () => {
         // verify the system accepts the change and throws the green success message
         await expect(userProfilePage.successMessage).toContainText('Success: Your password has been successfully updated.');
     });
+
+    // test 05
+    test('Test-05: Verify password mismatch in the confirm field throws a validation error', async ({ page }) => {
+        const userProfilePage = new UserProfilePage(page);
+        // navigate directly to the Change Password page using the POM method
+        await userProfilePage.navigateToChangePassword();
+        // intentionally fill mismatched passwords
+        await userProfilePage.passwordInput.fill('SecurePass123');
+        await userProfilePage.passwordConfirmInput.fill('WrongMatch456');
+        // attempt to submit the invalid form
+        await userProfilePage.continueButton.click();
+        // verify the field level warning message catches the mismatch
+        await expect(userProfilePage.fieldWarningMessage).toContainText('Password confirmation does not match password!');
+    });
 })
