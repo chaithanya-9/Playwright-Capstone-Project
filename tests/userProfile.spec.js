@@ -33,4 +33,15 @@ test.describe('User Profile Service', () => {
         // use fieldWarningMessage because this is field level validation and won't trigger the main warning message at the top of the page
         await expect(userProfilePage.fieldWarningMessage).toContainText('Telephone must be between 3 and 32 characters!');
     });
+
+    // test 03
+    test('Test-03: Verify the Back button on the Edit Account page returns to the dashboard', async ({ page }) => {
+        const userProfilePage = new UserProfilePage(page);
+        // navigate directly to the Edit Account page using POM method
+        await userProfilePage.navigateToEditAccount();
+        // click the Back button
+        await userProfilePage.backButton.click();
+        // verify the system safely aborts the edit and routes back to the main dashboard
+        await expect(page).toHaveURL(/.*route=account\/account/);
+    });
 })
