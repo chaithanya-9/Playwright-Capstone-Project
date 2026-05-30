@@ -1,0 +1,81 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: authentication.spec.js >> Authentication Service Tests >> Test-11: Verify all mandatory warning messages appear when submitting a blank registration form
+- Location: tests/authentication.spec.js:172:5
+
+# Error details
+
+```
+Test timeout of 30000ms exceeded.
+```
+
+```
+Error: page.goto: Test timeout of 30000ms exceeded.
+Call log:
+  - navigating to "https://naveenautomationlabs.com/opencart/", waiting until "load"
+
+```
+
+# Test source
+
+```ts
+  1  | class BasePage {
+  2  |     constructor(page) {
+  3  |         this.page = page;
+  4  |         // global locators
+  5  |         this.searchBox = page.getByRole('textbox', { name: 'search' });
+  6  |         this.searchButton = page.locator('#search').getByRole('button');
+  7  |         // header locators
+  8  |         this.myAccountDropdown = page.getByRole('link', { name: ' My Account' });
+  9  |         this.registerLink = page.getByRole('link', { name: 'Register' });
+  10 |         this.loginLink = page.locator('#top-links').getByRole('link', { name: 'Login' });
+  11 |         this.shoppingCartLink = page.locator('a[title="Shopping Cart"]');
+  12 |         this.checkoutLink = page.locator('a[title="Checkout"]');
+  13 |         this.logoutLink = page.locator('.dropdown-menu').getByRole('link', { name: 'Logout' });
+  14 |         // navigation menu locators 
+  15 |         this.topMenuDesktops = page.getByRole('link', { name: 'Desktops', exact: true });
+  16 |         this.showAllDesktops = page.getByRole('link', { name: 'Show All Desktops' });
+  17 |     }
+  18 |     // navigate to the base URL
+  19 |     async navigate() {
+> 20 |         await this.page.goto('https://naveenautomationlabs.com/opencart/');
+     |                         ^ Error: page.goto: Test timeout of 30000ms exceeded.
+  21 |     }
+  22 |     // search for product
+  23 |     async searchForProduct(keyword) {
+  24 |         await this.searchBox.fill(keyword);
+  25 |         await this.searchButton.click();
+  26 |     }
+  27 |     // open My Account dropdown from header
+  28 |     async clickMyAccount() {
+  29 |         await this.myAccountDropdown.click();
+  30 |     }
+  31 |     // navigate directly to login page
+  32 |     async navigateToLogin() {
+  33 |         await this.clickMyAccount();
+  34 |         await this.loginLink.click();
+  35 |     }
+  36 |     // navigate directly to register page
+  37 |     async navigateToRegister() {
+  38 |         await this.clickMyAccount();
+  39 |         await this.registerLink.click();
+  40 |     }
+  41 |     // opens the My Account dropdown and clicks Logout
+  42 |     async clickLogout() {
+  43 |         await this.clickMyAccount();
+  44 |         await this.logoutLink.click();
+  45 |     }
+  46 |     // navigates to the main desktop category page
+  47 |     async navigateToDesktopCategory() {
+  48 |         await this.topMenuDesktops.click();
+  49 |         await this.showAllDesktops.click();
+  50 |     }
+  51 | }
+  52 | module.exports = { BasePage };
+```
