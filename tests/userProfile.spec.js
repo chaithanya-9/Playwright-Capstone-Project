@@ -154,4 +154,15 @@ test.describe('User Profile Service', () => {
         // verify the page heading is visible to confirm content loaded
         await expect(page.getByRole('heading', { name: 'Your Transactions' })).toBeVisible();
     });
+
+    // test 12
+    test('Test-12: Verify the user can successfully subscribe to the newsletter', async ({ page }) => {
+        const userProfilePage = new UserProfilePage(page);
+        // navigate to the Newsletter subscription page using the POM method
+        await userProfilePage.navigateToNewsletter();
+        // subscribe to the newsletter
+        await userProfilePage.setNewsletterSubscription(true);
+        // verify the success message appears
+        await expect(userProfilePage.successMessage).toContainText('Success: Your newsletter subscription has been successfully updated!');
+    });
 })
