@@ -71,4 +71,15 @@ test.describe('User Profile Service', () => {
         // verify the field level warning message catches the mismatch
         await expect(userProfilePage.fieldWarningMessage).toContainText('Password confirmation does not match password!');
     });
+
+    // test 06
+    test('Test-06: Verify navigation to the Order History page loads successfully', async ({ page }) => {
+        const userProfilePage = new UserProfilePage(page);
+        // navigate to the My Account dashboard using the POM method
+        await userProfilePage.navigateToMyAccount();
+        // click the 'View your order history' link from the dashboard
+        await userProfilePage.orderHistoryLink.click();
+        // verify the system routes successfully to the Order History page
+        await expect(page).toHaveURL(/.*route=account\/order/);
+    });
 })
