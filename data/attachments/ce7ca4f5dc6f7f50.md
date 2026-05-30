@@ -1,0 +1,457 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: checkoutPayment.spec.js >> Checkout and Payment Service >> test suits which need to login >> Test-15: Validate total price at checkout matches the final confirmation page
+- Location: tests/checkoutPayment.spec.js:293:9
+
+# Error details
+
+```
+Error: expect(received).toContain(expected) // indexOf
+
+Expected substring: "$100.00"
+Received string:    "
+"
+```
+
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - navigation [ref=e2]:
+    - generic [ref=e3]:
+      - button "$ Currency " [ref=e7] [cursor=pointer]:
+        - strong [ref=e8]: $
+        - text: Currency
+        - generic [ref=e9]: 
+      - list [ref=e11]:
+        - listitem [ref=e12]:
+          - link "" [ref=e13]:
+            - /url: https://naveenautomationlabs.com/opencart/index.php?route=information/contact
+            - generic [ref=e14]: 
+          - text: "123456789"
+        - listitem [ref=e15]:
+          - link " My Account" [ref=e16]:
+            - /url: https://naveenautomationlabs.com/opencart/index.php?route=account/account
+            - generic [ref=e17]: 
+            - text: My Account
+        - listitem [ref=e19]:
+          - link " Wish List (0)" [ref=e20]:
+            - /url: https://naveenautomationlabs.com/opencart/index.php?route=account/wishlist
+            - generic [ref=e21]: 
+            - text: Wish List (0)
+        - listitem [ref=e22]:
+          - link " Shopping Cart" [ref=e23]:
+            - /url: https://naveenautomationlabs.com/opencart/index.php?route=checkout/cart
+            - generic [ref=e24]: 
+            - text: Shopping Cart
+        - listitem [ref=e25]:
+          - link " Checkout" [ref=e26]:
+            - /url: https://naveenautomationlabs.com/opencart/index.php?route=checkout/checkout
+            - generic [ref=e27]: 
+            - text: Checkout
+  - banner [ref=e28]:
+    - generic [ref=e30]:
+      - link "naveenopencart" [ref=e33]:
+        - /url: https://naveenautomationlabs.com/opencart/index.php?route=common/home
+        - img "naveenopencart" [ref=e34]
+      - generic [ref=e36]:
+        - textbox "Search" [ref=e37]
+        - button "" [ref=e39] [cursor=pointer]:
+          - generic [ref=e40]: 
+      - generic [ref=e42]:
+        - button " 1 item(s) - $122.00" [ref=e43] [cursor=pointer]:
+          - generic [ref=e44]: 
+          - text: 1 item(s) - $122.00
+        - text:   
+  - navigation [ref=e46]:
+    - generic: 
+    - list [ref=e48]:
+      - listitem [ref=e49]:
+        - link "Desktops" [ref=e50]:
+          - /url: https://naveenautomationlabs.com/opencart/index.php?route=product/category&path=20
+      - listitem [ref=e51]:
+        - link "Laptops & Notebooks" [ref=e52]:
+          - /url: https://naveenautomationlabs.com/opencart/index.php?route=product/category&path=18
+      - listitem [ref=e53]:
+        - link "Components" [ref=e54]:
+          - /url: https://naveenautomationlabs.com/opencart/index.php?route=product/category&path=25
+      - listitem [ref=e55]:
+        - link "Tablets" [ref=e56]:
+          - /url: https://naveenautomationlabs.com/opencart/index.php?route=product/category&path=57
+      - listitem [ref=e57]:
+        - link "Software" [ref=e58]:
+          - /url: https://naveenautomationlabs.com/opencart/index.php?route=product/category&path=17
+      - listitem [ref=e59]:
+        - link "Phones & PDAs" [ref=e60]:
+          - /url: https://naveenautomationlabs.com/opencart/index.php?route=product/category&path=24
+      - listitem [ref=e61]:
+        - link "Cameras" [ref=e62]:
+          - /url: https://naveenautomationlabs.com/opencart/index.php?route=product/category&path=33
+      - listitem [ref=e63]:
+        - link "MP3 Players" [ref=e64]:
+          - /url: https://naveenautomationlabs.com/opencart/index.php?route=product/category&path=34
+  - generic [ref=e65]:
+    - list [ref=e66]:
+      - listitem [ref=e67]:
+        - link "" [ref=e68]:
+          - /url: https://naveenautomationlabs.com/opencart/index.php?route=common/home
+          - generic [ref=e69]: 
+      - listitem [ref=e70]:
+        - link "Shopping Cart" [ref=e71]:
+          - /url: https://naveenautomationlabs.com/opencart/index.php?route=checkout/cart
+      - listitem [ref=e72]:
+        - link "Checkout" [ref=e73]:
+          - /url: https://naveenautomationlabs.com/opencart/index.php?route=checkout/checkout
+    - generic [ref=e75]:
+      - heading "Checkout" [level=1] [ref=e76]
+      - generic [ref=e77]:
+        - 'heading "Step 1: Checkout Options" [level=4] [ref=e80]'
+        - generic [ref=e81]:
+          - 'heading "Step 2: Billing Details " [level=4] [ref=e83]':
+            - 'link "Step 2: Billing Details " [ref=e84]':
+              - /url: "#collapse-payment-address"
+              - text: "Step 2: Billing Details"
+              - generic [ref=e85]: 
+          - text: "* * * * * *"
+        - generic [ref=e86]:
+          - 'heading "Step 3: Delivery Details " [level=4] [ref=e88]':
+            - 'link "Step 3: Delivery Details " [ref=e89]':
+              - /url: "#collapse-shipping-address"
+              - text: "Step 3: Delivery Details"
+              - generic [ref=e90]: 
+          - text: "* * * * * *"
+        - 'heading "Step 4: Delivery Method " [level=4] [ref=e93]':
+          - 'link "Step 4: Delivery Method " [ref=e94]':
+            - /url: "#collapse-shipping-method"
+            - text: "Step 4: Delivery Method"
+            - generic [ref=e95]: 
+        - generic [ref=e96]:
+          - 'heading "Step 5: Payment Method " [level=4] [ref=e98]':
+            - 'link "Step 5: Payment Method " [ref=e99]':
+              - /url: "#collapse-payment-method"
+              - text: "Step 5: Payment Method"
+              - generic [ref=e100]: 
+          - generic [ref=e102]:
+            - paragraph [ref=e103]: Please select the preferred payment method to use on this order.
+            - generic [ref=e105] [cursor=pointer]:
+              - radio "Cash On Delivery" [checked] [ref=e106]
+              - text: Cash On Delivery
+            - paragraph [ref=e107]:
+              - strong [ref=e108]: Add Comments About Your Order
+            - paragraph [ref=e109]:
+              - textbox [ref=e110]
+            - generic [ref=e111]:
+              - text: I have read and agree to the
+              - link "Terms & Conditions" [ref=e112]:
+                - /url: https://naveenautomationlabs.com/opencart/index.php?route=information/information/agree&information_id=5
+              - checkbox [checked] [ref=e113]
+              - button "Continue" [ref=e114] [cursor=pointer]
+        - generic [ref=e115]:
+          - 'heading "Step 6: Confirm Order " [level=4] [ref=e117]':
+            - 'link "Step 6: Confirm Order " [expanded] [ref=e118]':
+              - /url: "#collapse-checkout-confirm"
+              - text: "Step 6: Confirm Order"
+              - generic [ref=e119]: 
+          - generic [ref=e120]:
+            - table [ref=e122]:
+              - rowgroup [ref=e123]:
+                - row "Product Name Model Quantity Unit Price Total" [ref=e124]:
+                  - cell "Product Name" [ref=e125]
+                  - cell "Model" [ref=e126]
+                  - cell "Quantity" [ref=e127]
+                  - cell "Unit Price" [ref=e128]
+                  - cell "Total" [ref=e129]
+              - rowgroup [ref=e130]:
+                - 'row "HP LP3065 - Delivery Date: 2011-04-22 Product 21 1 $100.00 $100.00" [ref=e131]':
+                  - 'cell "HP LP3065 - Delivery Date: 2011-04-22" [ref=e132]':
+                    - link "HP LP3065" [ref=e133]:
+                      - /url: https://naveenautomationlabs.com/opencart/index.php?route=product/product&product_id=47
+                    - text: "- Delivery Date: 2011-04-22"
+                  - cell "Product 21" [ref=e134]
+                  - cell "1" [ref=e135]
+                  - cell "$100.00" [ref=e136]
+                  - cell "$100.00" [ref=e137]
+              - rowgroup [ref=e138]:
+                - 'row "Sub-Total: $100.00" [ref=e139]':
+                  - cell "Sub-Total:" [ref=e140]:
+                    - strong [ref=e141]: "Sub-Total:"
+                  - cell "$100.00" [ref=e142]
+                - 'row "Flat Shipping Rate: $5.00" [ref=e143]':
+                  - cell "Flat Shipping Rate:" [ref=e144]:
+                    - strong [ref=e145]: "Flat Shipping Rate:"
+                  - cell "$5.00" [ref=e146]
+                - 'row "Total: $105.00" [ref=e147]':
+                  - cell "Total:" [ref=e148]:
+                    - strong [ref=e149]: "Total:"
+                  - cell "$105.00" [ref=e150]
+            - button "Confirm Order" [ref=e152] [cursor=pointer]
+  - contentinfo [ref=e153]:
+    - generic [ref=e154]:
+      - generic [ref=e155]:
+        - generic [ref=e156]:
+          - heading "Information" [level=5] [ref=e157]
+          - list [ref=e158]:
+            - listitem [ref=e159]:
+              - link "About Us" [ref=e160]:
+                - /url: https://naveenautomationlabs.com/opencart/index.php?route=information/information&information_id=4
+            - listitem [ref=e161]:
+              - link "Delivery Information" [ref=e162]:
+                - /url: https://naveenautomationlabs.com/opencart/index.php?route=information/information&information_id=6
+            - listitem [ref=e163]:
+              - link "Privacy Policy" [ref=e164]:
+                - /url: https://naveenautomationlabs.com/opencart/index.php?route=information/information&information_id=3
+            - listitem [ref=e165]:
+              - link "Terms & Conditions" [ref=e166]:
+                - /url: https://naveenautomationlabs.com/opencart/index.php?route=information/information&information_id=5
+        - generic [ref=e167]:
+          - heading "Customer Service" [level=5] [ref=e168]
+          - list [ref=e169]:
+            - listitem [ref=e170]:
+              - link "Contact Us" [ref=e171]:
+                - /url: https://naveenautomationlabs.com/opencart/index.php?route=information/contact
+            - listitem [ref=e172]:
+              - link "Returns" [ref=e173]:
+                - /url: https://naveenautomationlabs.com/opencart/index.php?route=account/return/add
+            - listitem [ref=e174]:
+              - link "Site Map" [ref=e175]:
+                - /url: https://naveenautomationlabs.com/opencart/index.php?route=information/sitemap
+        - generic [ref=e176]:
+          - heading "Extras" [level=5] [ref=e177]
+          - list [ref=e178]:
+            - listitem [ref=e179]:
+              - link "Brands" [ref=e180]:
+                - /url: https://naveenautomationlabs.com/opencart/index.php?route=product/manufacturer
+            - listitem [ref=e181]:
+              - link "Gift Certificates" [ref=e182]:
+                - /url: https://naveenautomationlabs.com/opencart/index.php?route=account/voucher
+            - listitem [ref=e183]:
+              - link "Affiliate" [ref=e184]:
+                - /url: https://naveenautomationlabs.com/opencart/index.php?route=affiliate/login
+            - listitem [ref=e185]:
+              - link "Specials" [ref=e186]:
+                - /url: https://naveenautomationlabs.com/opencart/index.php?route=product/special
+        - generic [ref=e187]:
+          - heading "My Account" [level=5] [ref=e188]
+          - list [ref=e189]:
+            - listitem [ref=e190]:
+              - link "My Account" [ref=e191]:
+                - /url: https://naveenautomationlabs.com/opencart/index.php?route=account/account
+            - listitem [ref=e192]:
+              - link "Order History" [ref=e193]:
+                - /url: https://naveenautomationlabs.com/opencart/index.php?route=account/order
+            - listitem [ref=e194]:
+              - link "Wish List" [ref=e195]:
+                - /url: https://naveenautomationlabs.com/opencart/index.php?route=account/wishlist
+            - listitem [ref=e196]:
+              - link "Newsletter" [ref=e197]:
+                - /url: https://naveenautomationlabs.com/opencart/index.php?route=account/newsletter
+      - separator [ref=e198]
+      - paragraph [ref=e199]:
+        - text: Powered By
+        - link "OpenCart" [ref=e200]:
+          - /url: http://www.opencart.com
+        - text: naveenopencart © 2026
+```
+
+# Test source
+
+```ts
+  209 |             await expect(checkoutPage.termsCheckbox).toBeChecked();
+  210 |             await checkoutPage.paymentMethodContinueButton.click();
+  211 |             await expect(checkoutPage.confirmOrderButton).toBeVisible();
+  212 |             await checkoutPage.confirmOrderButton.click();
+  213 |             // verify success page
+  214 |             await expect(checkoutPage.successHeading).toBeVisible();
+  215 |             await expect(checkoutPage.successHeading).toHaveText('Your order has been placed!');
+  216 |         });
+  217 | 
+  218 |         // test 11
+  219 |         test('Test-11: Verify double-click on Place Order does not create duplicate orders', async ({ page }) => {
+  220 |             const checkoutPage = new CheckoutPage(page);
+  221 |             await expect(page.locator('#collapse-payment-address')).toHaveAttribute('aria-expanded', 'true');
+  222 |             await checkoutPage.billingAddressContinueBtn.click();
+  223 |             await expect(page.locator('#collapse-shipping-address')).toHaveAttribute('aria-expanded', 'true');
+  224 |             await checkoutPage.deliveryAddressContinueBtn.click();
+  225 |             await expect(page.locator('#collapse-shipping-method')).toHaveAttribute('aria-expanded', 'true');
+  226 |             await checkoutPage.shippingMethodContinueButton.click();
+  227 |             await expect(page.locator('#collapse-payment-method')).toHaveAttribute('aria-expanded', 'true');
+  228 |             await checkoutPage.termsCheckbox.check();
+  229 |             await expect(checkoutPage.termsCheckbox).toBeChecked();
+  230 |             await checkoutPage.paymentMethodContinueButton.click();
+  231 |             await expect(checkoutPage.confirmOrderButton).toBeVisible();
+  232 |             // perform the double-click on confirm order
+  233 |             await checkoutPage.confirmOrderButton.dblclick();
+  234 |             // verify only one success page appears with no duplication
+  235 |             await expect(checkoutPage.successHeading).toBeVisible();
+  236 |             await expect(checkoutPage.successHeading).toHaveText('Your order has been placed!');
+  237 |         });
+  238 | 
+  239 |         // test 12
+  240 |         test('Test-12: Verify the Continue button on the success page redirects to Home', async ({ page }) => {
+  241 |             const checkoutPage = new CheckoutPage(page);
+  242 |             await expect(page.locator('#collapse-payment-address')).toHaveAttribute('aria-expanded', 'true');
+  243 |             await checkoutPage.billingAddressContinueBtn.click();
+  244 |             await expect(page.locator('#collapse-shipping-address')).toHaveAttribute('aria-expanded', 'true');
+  245 |             await checkoutPage.deliveryAddressContinueBtn.click();
+  246 |             await expect(page.locator('#collapse-shipping-method')).toHaveAttribute('aria-expanded', 'true');
+  247 |             await checkoutPage.shippingMethodContinueButton.click();
+  248 |             await expect(page.locator('#collapse-payment-method')).toHaveAttribute('aria-expanded', 'true');
+  249 |             await checkoutPage.termsCheckbox.check();
+  250 |             await expect(checkoutPage.termsCheckbox).toBeChecked();
+  251 |             await checkoutPage.paymentMethodContinueButton.click();
+  252 |             await expect(checkoutPage.confirmOrderButton).toBeVisible();
+  253 |             await checkoutPage.confirmOrderButton.click();
+  254 |             // verify success page and click continue
+  255 |             await expect(checkoutPage.successHeading).toBeVisible();
+  256 |             await checkoutPage.successContinueButton.click();
+  257 |             // verify redirect to home
+  258 |             await expect(page).toHaveURL(/.*common\/home/);
+  259 |         });
+  260 | 
+  261 |         // test 14
+  262 |         test('Test-14: Complete checkout with different billing and shipping address', async ({ page }) => {
+  263 |             const checkoutPage = new CheckoutPage(page);
+  264 |             await expect(page.locator('#collapse-payment-address')).toHaveAttribute('aria-expanded', 'true');
+  265 |             await checkoutPage.billingAddressContinueBtn.click();
+  266 |             // wait for delivery section to open then select new address
+  267 |             await expect(page.locator('#collapse-shipping-address')).toHaveAttribute('aria-expanded', 'true');
+  268 |             await checkoutPage.newDeliveryAddressRadioButton.check();
+  269 |             // wait for the new address form to become visible before filling
+  270 |             await expect(page.locator('#shipping-new')).toBeVisible();
+  271 |             // fill new address form fields
+  272 |             await checkoutPage.newAddressFirstName.fill('Jane');
+  273 |             await checkoutPage.newAddressLastName.fill('Wick');
+  274 |             await checkoutPage.newAddress1.fill('456 Oak St');
+  275 |             await checkoutPage.newAddressCity.fill('Los Angeles');
+  276 |             await checkoutPage.newAddressPostcode.fill('90001');
+  277 |             await checkoutPage.newAddressCountry.selectOption({ label: 'United States' });
+  278 |             await checkoutPage.newAddressZone.selectOption({ label: 'California' });
+  279 |             await checkoutPage.deliveryAddressContinueBtn.click();
+  280 |             await expect(page.locator('#collapse-shipping-method')).toHaveAttribute('aria-expanded', 'true');
+  281 |             await checkoutPage.shippingMethodContinueButton.click();
+  282 |             await expect(page.locator('#collapse-payment-method')).toHaveAttribute('aria-expanded', 'true');
+  283 |             await checkoutPage.termsCheckbox.check();
+  284 |             await expect(checkoutPage.termsCheckbox).toBeChecked();
+  285 |             await checkoutPage.paymentMethodContinueButton.click();
+  286 |             await expect(checkoutPage.confirmOrderButton).toBeVisible();
+  287 |             await checkoutPage.confirmOrderButton.click();
+  288 |             // verify success page
+  289 |             await expect(checkoutPage.successHeading).toBeVisible();
+  290 |         });
+  291 | 
+  292 |         // test 15
+  293 |         test('Test-15: Validate total price at checkout matches the final confirmation page', async ({ page }) => {
+  294 |             const checkoutPage = new CheckoutPage(page);
+  295 |             await expect(page.locator('#collapse-payment-address')).toHaveAttribute('aria-expanded', 'true');
+  296 |             await checkoutPage.billingAddressContinueBtn.click();
+  297 |             await expect(page.locator('#collapse-shipping-address')).toHaveAttribute('aria-expanded', 'true');
+  298 |             await checkoutPage.deliveryAddressContinueBtn.click();
+  299 |             await expect(page.locator('#collapse-shipping-method')).toHaveAttribute('aria-expanded', 'true');
+  300 |             await checkoutPage.shippingMethodContinueButton.click();
+  301 |             await expect(page.locator('#collapse-payment-method')).toHaveAttribute('aria-expanded', 'true');
+  302 |             await checkoutPage.termsCheckbox.check();
+  303 |             await expect(checkoutPage.termsCheckbox).toBeChecked();
+  304 |             await checkoutPage.paymentMethodContinueButton.click();
+  305 |             // wait for payment method to collapse and confirm order to appear
+  306 |             await expect(checkoutPage.confirmOrderButton).toBeVisible();
+  307 |             // verify the base product price captured earlier exists in the summary table
+  308 |             const summaryText = await checkoutPage.confirmOrderTable.innerText();
+> 309 |             expect(summaryText).toContain(productPriceText);
+      |                                 ^ Error: expect(received).toContain(expected) // indexOf
+  310 |             // verify the final total is populated with a dollar amount
+  311 |             await expect(checkoutPage.finalTotalText).toBeVisible();
+  312 |             const finalPrice = await checkoutPage.finalTotalText.innerText();
+  313 |             expect(finalPrice).toContain('$');
+  314 |             // place order to conclude cleanly
+  315 |             await checkoutPage.confirmOrderButton.click();
+  316 |             await expect(checkoutPage.successHeading).toBeVisible();
+  317 |         });
+  318 |     })
+  319 | 
+  320 |     test.describe('test suits which does not need to login', () => {
+  321 |         // test 01
+  322 |         test('Test-01: Proceed to checkout as a Guest user', async ({ page }) => {
+  323 |             const checkoutPage = new CheckoutPage(page);
+  324 |             await page.goto('https://naveenautomationlabs.com/opencart/index.php?route=product/product&product_id=47');
+  325 |             await page.locator('#button-cart').click();
+  326 |             await expect(page.locator('.alert-success')).toBeVisible();
+  327 |             // navigate directly to the Checkout page
+  328 |             await checkoutPage.navigateToCheckout();
+  329 |             await page.waitForLoadState('networkidle');
+  330 |             await checkoutPage.guestCheckoutRadioButton.check();
+  331 |             await checkoutPage.accountContinueButton.waitFor({ state: 'visible' });
+  332 |             // wait for jQuery to register the radio button change before clicking continue
+  333 |             await expect(checkoutPage.accountContinueButton).toBeEnabled();
+  334 |             await checkoutPage.accountContinueButton.click();
+  335 |             // fill out the guest form
+  336 |             const uniqueEmail = `guestuser_${Date.now()}@test.com`;
+  337 |             await checkoutPage.fillGuestDetails('John', 'Wick', uniqueEmail, '1234567890', '123 Main St', 'New York', '10001', 'United States', 'New York');
+  338 |             await checkoutPage.guestContinueButton.click();
+  339 |             // wait for billing accordion to fully collapse before proceeding
+  340 |             // wait for shipping method accordion to open
+  341 |             await expect(page.locator('#collapse-shipping-method')).toHaveAttribute('aria-expanded', 'true');
+  342 |             await checkoutPage.shippingMethodContinueButton.click();
+  343 |             // wait for shipping method accordion to collapse
+  344 |             // wait for payment method accordion to open
+  345 |             await expect(page.locator('#collapse-payment-method')).toHaveAttribute('aria-expanded', 'true');
+  346 |             await checkoutPage.termsCheckbox.check();
+  347 |             // wait for jQuery to register the checkbox before proceeding
+  348 |             await expect(checkoutPage.termsCheckbox).toBeChecked();
+  349 |             await checkoutPage.paymentMethodContinueButton.click();
+  350 |             // wait for payment method accordion to collapse
+  351 |             await expect(checkoutPage.confirmOrderButton).toBeVisible();
+  352 |             await checkoutPage.confirmOrderButton.click();
+  353 |             // verify success page
+  354 |             await expect(checkoutPage.successHeading).toBeVisible();
+  355 |             await expect(checkoutPage.successHeading).toHaveText('Your order has been placed!');
+  356 |         });
+  357 | 
+  358 |         // test 03
+  359 |         test('Test-03: Verify mandatory fields in the Billing Details step', async ({ page }) => {
+  360 |             const checkoutPage = new CheckoutPage(page);
+  361 |             await page.goto('https://naveenautomationlabs.com/opencart/index.php?route=product/product&product_id=47');
+  362 |             await page.locator('#button-cart').click();
+  363 |             await expect(page.locator('.alert-success')).toBeVisible();
+  364 |             await checkoutPage.navigateToCheckout();
+  365 |             await page.waitForLoadState('networkidle');
+  366 |             await checkoutPage.guestCheckoutRadioButton.check();
+  367 |             await checkoutPage.accountContinueButton.waitFor({ state: 'visible' });
+  368 |             // wait for jQuery to register the radio button before clicking continue
+  369 |             await expect(checkoutPage.accountContinueButton).toBeEnabled();
+  370 |             await checkoutPage.accountContinueButton.click();
+  371 |             // attempt to submit a blank form
+  372 |             await checkoutPage.guestContinueButton.click();
+  373 |             // verify mandatory field warnings appear
+  374 |             await expect(checkoutPage.inputFieldWarning.first()).toBeVisible();
+  375 |             // assert specific field warnings to ensure the right fields failed
+  376 |             await expect(page.locator('text=First Name must be between 1 and 32 characters!')).toBeVisible();
+  377 |             await expect(page.locator('text=Last Name must be between 1 and 32 characters!')).toBeVisible();
+  378 |             await expect(page.locator('text=E-Mail address does not appear to be valid!')).toBeVisible();
+  379 |             await expect(page.locator('text=Telephone must be between 3 and 32 characters!')).toBeVisible();
+  380 |             await expect(page.locator('text=Address 1 must be between 3 and 128 characters!')).toBeVisible();
+  381 |             await expect(page.locator('text=City must be between 2 and 128 characters!')).toBeVisible();
+  382 |         });
+  383 | 
+  384 |         // test 13
+  385 |         test('Test-13: Attempt to bypass checkout steps directly via URL', async ({ page }) => {
+  386 |             // attempt to navigate directly to the final checkout confirmation step
+  387 |             await page.goto('https://naveenautomationlabs.com/opencart/index.php?route=checkout/confirm');
+  388 |             // wait for the redirect to complete
+  389 |             await page.waitForLoadState('networkidle');
+  390 |             // verify that we are not on the confirmation page
+  391 |             const currentURL = page.url();
+  392 |             expect(currentURL).not.toContain('route=checkout/confirm');
+  393 |             // verify we are redirected back to the cart or home
+  394 |             const isRedirectedToCartOrHome = currentURL.includes('route=checkout/cart') || currentURL.includes('route=common/home');
+  395 |             expect(isRedirectedToCartOrHome).toBeTruthy();
+  396 |         });
+  397 |     })
+  398 | 
+  399 | });
+```
