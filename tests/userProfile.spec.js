@@ -44,4 +44,17 @@ test.describe('User Profile Service', () => {
         // verify the system safely aborts the edit and routes back to the main dashboard
         await expect(page).toHaveURL(/.*route=account\/account/);
     });
+
+    // test 04
+    test('Test-04: Verify the user can successfully change their password', async ({ page }) => {
+        const userProfilePage = new UserProfilePage(page);
+        // navigate directly to the Change Password page using the POM method
+        await userProfilePage.navigateToChangePassword();
+        // generate a dynamic password to prove the database actually accepted the update
+        const newPassword = `NewPass${Date.now()}`;
+        // update the password using then POM method
+        await userProfilePage.changePassword(newPassword);
+        // verify the system accepts the change and throws the green success message
+        await expect(userProfilePage.successMessage).toContainText('Success: Your password has been successfully updated.');
+    });
 })
