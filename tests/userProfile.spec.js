@@ -179,4 +179,17 @@ test.describe('User Profile Service', () => {
         await userProfilePage.navigateToNewsletter();
         await expect(userProfilePage.newsletterNoRadio).toBeChecked();
     });
+
+    // test 14
+    test('Test-14: Verify navigation to the Wish List page loads successfully', async ({ page }) => {
+        const userProfilePage = new UserProfilePage(page);
+        // navigate to the dashboard
+        await userProfilePage.navigateToMyAccount();
+        // click the 'Wish List' link from the sidebar
+        await userProfilePage.wishListLink.click();
+        // verify the routing to the Wish List page
+        await expect(page).toHaveURL(/.*route=account\/wishlist/);
+        // verify page title matches expected content
+        await expect(page.getByRole('heading', { name: 'My Wish List' })).toBeVisible();
+    });
 })
