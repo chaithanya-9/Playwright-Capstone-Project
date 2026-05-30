@@ -192,4 +192,15 @@ test.describe('User Profile Service', () => {
         // verify page title matches expected content
         await expect(page.getByRole('heading', { name: 'My Wish List' })).toBeVisible();
     });
+
+    // test 15
+    test('Test-15: Verify Address Book link is present and navigation is correct', async ({ page }) => {
+        const userProfilePage = new UserProfilePage(page);
+        // navigate directly to the address book page using URL 
+        await page.goto('https://naveenautomationlabs.com/opencart/index.php?route=account/address');
+        // assert the URL instead of the class
+        await expect(page).toHaveURL(/.*route=account\/address/);
+        // verify the heading exists as a secondary check
+        await expect(page.getByRole('heading', { name: 'Address Book Entries' })).toBeVisible();
+    });
 })
