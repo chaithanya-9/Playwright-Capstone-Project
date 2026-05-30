@@ -102,4 +102,17 @@ test.describe('User Profile Service', () => {
             await expect(page.getByText('You have not made any previous orders!')).toBeVisible();
         }
     });
+
+    // test 08
+    test('Test-08: Verify navigation to the Downloads page loads successfully', async ({ page }) => {
+        const userProfilePage = new UserProfilePage(page);
+        // navigate to the My Account dashboard using the POM method
+        await userProfilePage.navigateToMyAccount();
+        // click the 'Downloads' link from the dashboard
+        await userProfilePage.downloadsLink.click();
+        // verify the system routes successfully to the Downloads page
+        await expect(page).toHaveURL(/.*route=account\/download/);
+        // verify the page heading is visible to confirm content loaded
+        await expect(page.getByRole('heading', { name: 'Account Downloads' })).toBeVisible();
+    });
 })
