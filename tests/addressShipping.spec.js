@@ -114,4 +114,18 @@ test.describe('Address and Shipping Service', () => {
         await expect(addressShippingPage.successAlert).toBeVisible();
         await expect(addressShippingPage.successAlert).toContainText('Your address has been successfully updated');
     });
+
+    // test 07
+    test('Test-07: Verify submitting Edit Address form with blank mandatory field triggers a warning', async ({ page }) => {
+        const addressPage = new AddressPage(page);
+        await addressPage.navigate();
+        // click edit on the first address
+        await page.getByRole('link', { name: 'Edit' }).first().click();
+        // clear a mandatory field to trigger validation
+        await addressPage.cityInput.fill('');
+        await addressPage.continueButton.click();
+        // verify field level warning appears
+        await expect(addressPage.fieldWarningMessage.first()).toBeVisible();
+        await expect(addressPage.fieldWarningMessage.first()).toContainText('City must be between 2 and 128 characters!');
+    });
 });
