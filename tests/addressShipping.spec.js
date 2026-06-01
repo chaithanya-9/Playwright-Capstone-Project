@@ -98,4 +98,20 @@ test.describe('Address and Shipping Service', () => {
         // visually select the state to prove its fully interactable
         await addressShippingPage.zoneDropdown.selectOption({ label: 'New York' });
     });
+
+    // test 06
+    test('Test-06: Verify user can successfully edit an existing address', async ({ page }) => {
+        const addressShippingPage = new AddressPage(page);
+        await addressShippingPage.navigate();
+        // click the edit button on the first address in the list
+        await page.getByRole('link', { name: 'Edit' }).first().click();
+        // verify we are on the edit address page
+        await expect(page).toHaveURL(/.*route=account\/address\/edit/);
+        // update the city field
+        await addressShippingPage.cityInput.fill('Los Angeles');
+        await addressShippingPage.continueButton.click();
+        // verify the system accepts the update and shows success banner
+        await expect(addressShippingPage.successAlert).toBeVisible();
+        await expect(addressShippingPage.successAlert).toContainText('Your address has been successfully updated');
+    });
 });
