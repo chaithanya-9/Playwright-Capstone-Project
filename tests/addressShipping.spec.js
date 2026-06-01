@@ -64,4 +64,21 @@ test.describe('Address and Shipping Service', () => {
         await expect(addressShippingPage.successAlert).toBeVisible();
         await expect(addressShippingPage.successAlert).toContainText('Your address has been successfully added');
     });
+
+    // test 04
+    test('Test-04: Verify submitting the Add Address form with all blank fields triggers mandatory field warnings', async ({ page }) => {
+        const addressShippingPage = new AddressPage(page);
+        // navigate directly to the Address Book page
+        await addressShippingPage.navigate();
+        // click the New Address button to open the form
+        await addressShippingPage.newAddressButton.click();
+        // attempt to submit the form immediately without filling any fields
+        await addressShippingPage.continueButton.click();
+        // verify field level warnings appear for all mandatory fields
+        await expect(addressShippingPage.fieldWarningMessage.first()).toBeVisible();
+        await expect(page.locator('text=First Name must be between 1 and 32 characters!')).toBeVisible();
+        await expect(page.locator('text=Last Name must be between 1 and 32 characters!')).toBeVisible();
+        await expect(page.locator('text=Address must be between 3 and 128 characters!')).toBeVisible();
+        await expect(page.locator('text=City must be between 2 and 128 characters!')).toBeVisible();
+    });
 });
