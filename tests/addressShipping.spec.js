@@ -81,4 +81,21 @@ test.describe('Address and Shipping Service', () => {
         await expect(page.locator('text=Address must be between 3 and 128 characters!')).toBeVisible();
         await expect(page.locator('text=City must be between 2 and 128 characters!')).toBeVisible();
     });
+
+    // test 05
+    test('Test-05: Verify the Region/State dropdown dynamically populates when a Country is selected', async ({ page }) => {
+        const addressShippingPage = new AddressPage(page);
+        // navigate directly to the Address Book page and open the new address form
+        await addressShippingPage.navigate();
+        await addressShippingPage.newAddressButton.click();
+        // select a country to trigger the backend AJAX request
+        await addressShippingPage.countryDropdown.selectOption({ label: 'United States' });
+        // wait for the network call to finish fetching the states
+        await page.waitForLoadState('networkidle');
+        // verify that the Region/State dropdown successfully populated with US states
+        // assert it contains a known state instead of being blank
+        await expect(addressShippingPage.zoneDropdown).toContainText('New York');
+        // visually select the state to prove its fully interactable
+        await addressShippingPage.zoneDropdown.selectOption({ label: 'New York' });
+    });
 });
