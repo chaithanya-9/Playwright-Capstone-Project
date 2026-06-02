@@ -191,7 +191,7 @@ test.describe('Address and Shipping Service', () => {
     });
 
     // test 11
-    test('Test-11: Verify dropdown validation (submitting without selecting a Region/State)', async ({ page }) => {
+    test('Test-11: Verify dropdown validation', async ({ page }) => {
         const addressPage = new AddressPage(page);
         // navigate directly to the Address Book page
         await addressPage.navigate();
