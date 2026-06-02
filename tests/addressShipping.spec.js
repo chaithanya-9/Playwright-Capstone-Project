@@ -145,4 +145,18 @@ test.describe('Address and Shipping Service', () => {
         await expect(addressShippingPage.newAddressButton).toBeVisible();
     });
 
+    // test 09
+    test('Test-09: Verify the Back button on the Edit Address form returns to the Address Book', async ({ page }) => {
+        const addressShippingPage = new AddressPage(page);
+        // navigate to the Address Book
+        await addressShippingPage.navigate();
+        // click edit on the first address
+        await page.getByRole('link', { name: 'Edit' }).first().click();
+        await expect(page).toHaveURL(/.*route=account\/address\/edit.*/);
+        // click back without making any changes
+        await addressShippingPage.backButtonForm.click();
+        // verify the system routed back to the address book
+        await expect(page).toHaveURL(/.*route=account\/address.*/);
+        await expect(page.getByRole('heading', { name: 'Address Book' })).toBeVisible();
+    });
 });
