@@ -159,4 +159,34 @@ test.describe('Address and Shipping Service', () => {
         await expect(page).toHaveURL(/.*route=account\/address.*/);
         await expect(page.getByRole('heading', { name: 'Address Book' })).toBeVisible();
     });
+
+    // test 10
+    test('Test-10: Verify the user can successfully change their Default address', async ({ page }) => {
+        const addressShippingPage = new AddressPage(page);
+        // navigate directly to the Address Book page
+        await addressShippingPage.navigate();
+        // click the New Address button
+        await addressShippingPage.newAddressButton.click();
+        // create a data object for the new address
+        const addressDetails = {
+            firstName: 'John',
+            // unique last name to prevent duplicates 
+            lastName: `Wick_${Date.now()}`,
+            company: 'Continental Hotel',
+            address1: '123 Assassin Blvd',
+            address2: 'Suite 47',
+            city: 'New York',
+            postCode: '10001',
+            country: 'United States',
+            zone: 'New York'
+        };
+        await addressShippingPage.fillAddressForm(addressDetails);
+        // set this new address as default before saving
+        await addressShippingPage.defaultYesRadio.check();
+        await expect(addressShippingPage.defaultYesRadio).toBeChecked();
+        await addressShippingPage.continueButton.click();
+        // verify the system accepts the change
+        await expect(addressShippingPage.successAlert).toBeVisible();
+        await expect(addressShippingPage.successAlert).toContainText('Your address has been successfully added');
+    });
 });
