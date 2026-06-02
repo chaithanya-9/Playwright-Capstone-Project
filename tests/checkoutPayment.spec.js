@@ -4,7 +4,7 @@ const { LoginPage } = require('../pages/LoginPage');
 
 test.describe('Checkout and Payment Service', () => {
 
-    test.describe('test suits which need to login', () => {
+    test.describe('test suites which need to login', () => {
         let productPriceText;
         let exTaxElementText;
         test.beforeEach(async ({ page }) => {
@@ -317,7 +317,7 @@ test.describe('Checkout and Payment Service', () => {
         });
     })
 
-    test.describe('test suits which does not need to login', () => {
+    test.describe('test suites which does not need to login', () => {
         // test 01
         test('Test-01: Proceed to checkout as a Guest user', async ({ page }) => {
             const checkoutPage = new CheckoutPage(page);
