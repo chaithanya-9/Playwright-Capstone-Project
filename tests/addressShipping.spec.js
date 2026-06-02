@@ -189,4 +189,27 @@ test.describe('Address and Shipping Service', () => {
         await expect(addressShippingPage.successAlert).toBeVisible();
         await expect(addressShippingPage.successAlert).toContainText('Your address has been successfully added');
     });
+
+    // test 11
+    test('Test-11: Verify dropdown validation (submitting without selecting a Region/State)', async ({ page }) => {
+        const addressPage = new AddressPage(page);
+        // navigate directly to the Address Book page
+        await addressPage.navigate();
+        // click the New Address button
+        await addressPage.newAddressButton.click();
+        // fill out all the fields except the Region/State dropdown to trigger validation
+        await addressPage.fillAddressForm({
+            firstName: 'Validation',
+            lastName: 'Test',
+            address1: '123 Missing Zone St',
+            city: 'Test City',
+            postCode: '10001'
+        });
+        await addressPage.zoneDropdown.selectOption({ index: 0 });
+        // attempt to submit the form without selecting a valid region/state
+        await addressPage.continueButton.click();
+        // verify the appropriate warning message appears for the Region/State field
+        await expect(addressPage.fieldWarningMessage.last()).toBeVisible();
+        await expect(addressPage.fieldWarningMessage.last()).toContainText('Please select a region / state!');
+    });
 });
