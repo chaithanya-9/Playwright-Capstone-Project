@@ -128,4 +128,21 @@ test.describe('Address and Shipping Service', () => {
         await expect(addressPage.fieldWarningMessage.first()).toBeVisible();
         await expect(addressPage.fieldWarningMessage.first()).toContainText('City must be between 2 and 128 characters!');
     });
+
+    // test 08
+    test('Test-08: Verify the Back button on the Add Address form returns to the Address Book', async ({ page }) => {
+        const addressShippingPage = new AddressPage(page);
+        // navigate to the Address Book and open the Add Address form
+        await addressShippingPage.navigate();
+        await addressShippingPage.newAddressButton.click();
+        // explicitly verify we successfully routed to the Add Address form
+        await expect(page).toHaveURL(/.*route=account\/address\/add/);
+        // click the Back button located at the bottom left of the form
+        await addressShippingPage.backButtonForm.click();
+        // verify the URL returned to the base address list
+        await expect(page).toHaveURL(/.*route=account\/address/);
+        // verify the UI state by checking if the New Address button is visible again
+        await expect(addressShippingPage.newAddressButton).toBeVisible();
+    });
+
 });
