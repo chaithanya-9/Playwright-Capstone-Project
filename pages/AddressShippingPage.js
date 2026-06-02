@@ -7,7 +7,7 @@ class AddressPage extends BasePage {
         this.newAddressButton = page.getByRole('link', { name: 'New Address' });
         this.backButtonList = page.getByRole('link', { name: 'Back' });
         // dynamic locators for Edit/Delete buttons 
-        this.editButtons = page.getByRole('link', { name: 'Edit' });
+        this.editButtons = page.locator('table a.btn-info');
         this.deleteButtons = page.getByRole('link', { name: 'Delete' });
         // Add/Edit address form locators
         this.firstNameInput = page.locator('#input-firstname');
@@ -24,11 +24,12 @@ class AddressPage extends BasePage {
         this.defaultNoRadio = page.locator('input[name="default"][value="0"]');
         // form action buttons
         this.continueButton = page.locator('input[value="Continue"]');
-        this.backButtonForm = page.locator('.pull-left > .btn-default');
+        // this.backButtonForm = page.locator('.pull-left > .btn-default');
         // Warnings message loacators
         this.successAlert = page.locator('.alert-success');
-        this.warningAlert = page.locator('.alert-warning, .alert-danger');
+        this.warningAlert = page.locator('.alert-warning');
         this.fieldWarningMessage = page.locator('.text-danger');
+        this.backButtonForm = page.getByRole('link', { name: 'Back' });
     }
     // navigates directly to the Address Book
     async navigate() {
