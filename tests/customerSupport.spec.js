@@ -42,4 +42,20 @@ test.describe('Customer Support Service Tests', () => {
         await expect(page.locator('text=Name must be between 3 and 32 characters!')).toBeVisible();
         await expect(page.locator('text=Enquiry must be between 10 and 3000 characters!')).toBeVisible();
     });
+
+    // test 04
+    test('Test-04: Verify submitting the Contact Us form with an invalid email format triggers a warning', async ({ page }) => {
+        const supportPage = new CustomerSupportPage(page);
+        // navigate directly to the Contact Us page
+        await supportPage.navigateToContactUs();
+        // submit with invalid email format
+        await supportPage.fillContactForm(
+            'QA Tester',
+            'invalidemail@',
+            'This is a test enquiry with an invalid email format to check validation.'
+        );
+        // verify the email validation warning appears
+        await expect(supportPage.fieldWarning).toBeVisible();
+        await expect(supportPage.fieldWarning).toContainText('E-Mail Address does not appear to be valid!');
+    });
 });
