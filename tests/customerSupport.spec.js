@@ -105,5 +105,27 @@ test.describe('Customer Support Service Tests', () => {
             await expect(supportPage.fieldWarning).toBeVisible();
             await expect(supportPage.fieldWarning).toContainText('Order ID required!');
         });
+
+        // test 07
+        test('Test-07: Verify the return form throws a validation error when Reason for Return is not selected', async ({ page }) => {
+            const supportPage = new CustomerSupportPage(page);
+            // navigate directly to the Product Returns form
+            await supportPage.navigateToReturns();
+            // fill all mandatory fields but skip selecting a reason
+            await supportPage.fillReturnForm(
+                'John',
+                'Doe',
+                'johndoe@test.com',
+                '1234567890',
+                '1',
+                'HP LP3065',
+                'Product 1'
+            );
+            // intentionally skip reason selection and submit
+            await supportPage.returnSubmitButton.click();
+            // verify the reason validation warning appears
+            await expect(supportPage.fieldWarning).toBeVisible();
+            await expect(supportPage.fieldWarning).toContainText('You must select a return product reason!');
+        });
     });
 });
