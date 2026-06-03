@@ -128,4 +128,14 @@ test.describe('Customer Support Service Tests', () => {
             await expect(supportPage.fieldWarning).toContainText('You must select a return product reason!');
         });
     });
+
+    // test 08
+    test('Test-08: Verify navigation to the Site Map page loads successfully', async ({ page }) => {
+        const supportPage = new CustomerSupportPage(page);
+        // navigate directly to the Site Map page
+        await supportPage.navigateToSiteMap();
+        // verify the URL and page heading
+        await expect(page).toHaveURL(/.*route=information\/sitemap/);
+        await expect(page.getByRole('heading', { name: 'Site Map' })).toBeVisible();
+    });
 });
