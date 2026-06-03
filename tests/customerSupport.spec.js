@@ -150,4 +150,17 @@ test.describe('Customer Support Service Tests', () => {
         await expect(page).toHaveURL(/.*route=information\/information/);
         await expect(page.getByRole('heading', { name: 'About Us' })).toBeVisible();
     });
+
+    // test 10
+    test('Test-10: Verify the Delivery Information footer link routes to the correct page', async ({ page }) => {
+        const supportPage = new CustomerSupportPage(page);
+        // navigate to homepage to access footer
+        await supportPage.navigate();
+        // click the Delivery Information link in the footer
+        await page.getByRole('link', { name: 'Delivery Information' }).click();
+        // verify the system routed to the Delivery Information page
+        await expect(page).toHaveURL(/.*route=information\/information/);
+        await expect(page.getByRole('heading', { name: 'Delivery Information' })).toBeVisible();
+    });
+
 });
