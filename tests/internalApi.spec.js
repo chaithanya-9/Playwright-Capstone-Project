@@ -43,4 +43,23 @@ test.describe('Internal API Service Tests', () => {
         expect(body).toContain('My Account');
         await apiContext.dispose();
     });
+
+    // test 04
+    test('Test-04: Verify POST login with invalid credentials returns an error response', async () => {
+        const apiContext = await request.newContext();
+        // send login form data with wrong credentials
+        const response = await apiContext.post(`${BASE_URL}/index.php?route=account/login`, {
+            form: {
+                email: `invalid${Date.now()}@test.com`,
+                password: 'wrongpassword',
+            }
+        });
+        // the server still returns 200 but the body contains the warning message
+        // OpenCart does not return 401, it renders the error inline on the login page
+        expect(response.status()).toBe(200);
+        // verify the response body contains the login failure warning
+        const body = await response.text();
+        expect(body).toContain('Warning: No match for E-Mail Address and/or Password.');
+        await apiContext.dispose();
+    });
 });
