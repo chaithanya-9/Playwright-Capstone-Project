@@ -12,4 +12,17 @@ test.describe('Internal API Service Tests', () => {
         expect(response.status()).toBe(200);
         await apiContext.dispose();
     });
+
+    // test 02
+    test('Test-02: Verify GET request to a product page returns HTTP 200', async () => {
+        const apiContext = await request.newContext();
+        // HP LP3065 is a known product in the OpenCart demo database
+        const response = await apiContext.get(`${BASE_URL}/index.php?route=product/product&product_id=47`);
+        // verify the product page responds successfully
+        expect(response.status()).toBe(200);
+        // verify the response body actually contains the product name
+        const body = await response.text();
+        expect(body).toContain('HP LP3065');
+        await apiContext.dispose();
+    });
 });
