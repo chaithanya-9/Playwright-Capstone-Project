@@ -29,4 +29,17 @@ test.describe('Customer Support Service Tests', () => {
         // verify the system accepts the submission and shows the success message
         await expect(page.getByText('Your enquiry has been successfully sent to the store owner!')).toBeVisible();
     });
+
+    // test 03
+    test('Test-03: Verify submitting the Contact Us form with blank fields triggers mandatory field warnings', async ({ page }) => {
+        const supportPage = new CustomerSupportPage(page);
+        // navigate directly to the Contact Us page
+        await supportPage.navigateToContactUs();
+        // click submit without filling any fields
+        await supportPage.contactSubmitButton.click();
+        // verify field level warnings appear
+        await expect(supportPage.fieldWarning.first()).toBeVisible();
+        await expect(page.locator('text=Name must be between 3 and 32 characters!')).toBeVisible();
+        await expect(page.locator('text=Enquiry must be between 10 and 3000 characters!')).toBeVisible();
+    });
 });
