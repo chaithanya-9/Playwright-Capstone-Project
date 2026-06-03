@@ -58,4 +58,32 @@ test.describe('Customer Support Service Tests', () => {
         await expect(supportPage.fieldWarning).toBeVisible();
         await expect(supportPage.fieldWarning).toContainText('E-Mail Address does not appear to be valid!');
     });
+
+    // returns tests require login so use saved auth session
+    test.describe('Returns Form Tests', () => {
+        test.use({ storageState: '.auth/user.json' });
+
+        // test 05
+        test('Test-05: Verify successful submission of a Product Return request with all mandatory details', async ({ page }) => {
+            const supportPage = new CustomerSupportPage(page);
+            // navigate directly to the Product Returns form
+            await supportPage.navigateToReturns();
+            // fill all mandatory return form fields
+            await supportPage.fillReturnForm(
+                'John',
+                'Doe',
+                'johndoe@test.com',
+                '1234567890',
+                '1',
+                'HP LP3065',
+                'Product 1'
+            );
+            // select a reason for return
+            await supportPage.returnReasonRadio.check();
+            await supportPage.returnSubmitButton.click();
+            // verify the system accepted the return request
+            await expect(page.getByText('Thank you for submitting your')).toBeVisible();
+            await expect(page.getByText('You will be notified via e-')).toBeVisible();
+        });
+    });
 });
