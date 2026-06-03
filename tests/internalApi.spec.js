@@ -25,4 +25,22 @@ test.describe('Internal API Service Tests', () => {
         expect(body).toContain('HP LP3065');
         await apiContext.dispose();
     });
+
+    // test 03
+    test('Test-03: Verify POST login with valid credentials returns a successful session response', async () => {
+        const apiContext = await request.newContext();
+        // send login form data as a POST request directly to the login route
+        const response = await apiContext.post(`${BASE_URL}/index.php?route=account/login`, {
+            form: {
+                email: 'demotest@gmail.com',
+                password: 'demotest',
+            }
+        });
+        // a successful login returns 200 and redirects to the account page
+        expect(response.status()).toBe(200);
+        // verify the response body confirms we reached the account dashboard
+        const body = await response.text();
+        expect(body).toContain('My Account');
+        await apiContext.dispose();
+    });
 });
