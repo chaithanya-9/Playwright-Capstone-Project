@@ -85,5 +85,25 @@ test.describe('Customer Support Service Tests', () => {
             await expect(page.getByText('Thank you for submitting your')).toBeVisible();
             await expect(page.getByText('You will be notified via e-')).toBeVisible();
         });
+
+        // test 06
+        test('Test-06: Verify the return form throws a validation error when Order ID is left blank', async ({ page }) => {
+            const supportPage = new CustomerSupportPage(page);
+            // navigate directly to the Product Returns form
+            await supportPage.navigateToReturns();
+            // fill all fields except Order ID
+            await supportPage.returnFirstNameInput.fill('John');
+            await supportPage.returnLastNameInput.fill('Doe');
+            await supportPage.returnEmailInput.fill('johndoe@test.com');
+            await supportPage.returnTelephoneInput.fill('1234567890');
+            // intentionally leave order ID blank
+            await supportPage.returnProductNameInput.fill('HP LP3065');
+            await supportPage.returnProductCodeInput.fill('Product 1');
+            await supportPage.returnReasonRadio.check();
+            await supportPage.returnSubmitButton.click();
+            // verify the order ID field warning appears
+            await expect(supportPage.fieldWarning).toBeVisible();
+            await expect(supportPage.fieldWarning).toContainText('Order ID required!');
+        });
     });
 });
