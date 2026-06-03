@@ -7,17 +7,17 @@ class CustomerSupportPage extends BasePage {
         this.contactNameInput = page.locator('#input-name');
         this.contactEmailInput = page.locator('#input-email');
         this.contactEnquiryInput = page.locator('#input-enquiry');
-        this.contactSubmitButton = page.locator('#button-contact');
+        this.contactSubmitButton = page.getByRole('button', { name: 'Submit' });
         // returns form locators
         this.returnFirstNameInput = page.locator('#input-firstname');
         this.returnLastNameInput = page.locator('#input-lastname');
         this.returnEmailInput = page.locator('#input-email');
         this.returnTelephoneInput = page.locator('#input-telephone');
         this.returnOrderIdInput = page.locator('#input-order-id');
-        this.returnProductNameInput = page.locator('#input-product-name');
-        this.returnProductCodeInput = page.locator('#input-product-code');
+        this.returnProductNameInput = page.getByRole('textbox', { name: '* Product Name' });
+        this.returnProductCodeInput = page.getByRole('textbox', { name: '* Product Code' });
         this.returnReasonRadio = page.locator('input[name="return_reason_id"]').first();
-        this.returnSubmitButton = page.locator('#button-return');
+        this.returnSubmitButton = page.getByRole('button', { name: 'Submit' });
         // success and warning banners
         this.successAlert = page.locator('.alert-success');
         this.warningAlert = page.locator('.alert-danger');
