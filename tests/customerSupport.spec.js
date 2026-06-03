@@ -163,4 +163,15 @@ test.describe('Customer Support Service Tests', () => {
         await expect(page.getByRole('heading', { name: 'Delivery Information' })).toBeVisible();
     });
 
+    // test 11
+    test('Test-11: Verify the Privacy Policy footer link routes to the correct page', async ({ page }) => {
+        const supportPage = new CustomerSupportPage(page);
+        // navigate to homepage to access footer
+        await supportPage.navigate();
+        // click the Privacy Policy link in the footer
+        await page.getByRole('link', { name: 'Privacy Policy' }).click();
+        // verify the system routed to the Privacy Policy page
+        await expect(page).toHaveURL(/.*route=information\/information/);
+        await expect(page.getByRole('heading', { name: 'Privacy Policy' })).toBeVisible();
+    });
 });
