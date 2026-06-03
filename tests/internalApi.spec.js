@@ -62,4 +62,17 @@ test.describe('Internal API Service Tests', () => {
         expect(body).toContain('Warning: No match for E-Mail Address and/or Password.');
         await apiContext.dispose();
     });
+
+    // test 05
+    test('Test-05: Verify GET request to the search endpoint returns HTTP 200 and contains results', async () => {
+        const apiContext = await request.newContext();
+        // send a search request with a known product keyword
+        const response = await apiContext.get(`${BASE_URL}/index.php?route=product/search&search=MacBook`);
+        // verify the search endpoint responds successfully
+        expect(response.status()).toBe(200);
+        // verify the response body contains the expected product in the results
+        const body = await response.text();
+        expect(body).toContain('MacBook');
+        await apiContext.dispose();
+    });
 });
